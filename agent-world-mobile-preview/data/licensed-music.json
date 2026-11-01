@@ -1,0 +1,19 @@
+{
+  "_note": "Real band recordings for Agent World. Add a track ONLY after the rights holders gave written permission (Rule A5). Tracks missing grantedBy, date or scope are ignored. Put the audio files in /music/ next to index.html (same site), FLAC or WAV for lossless. Tracks load when a listener turns sound on.",
+  "_example": {
+    "stage": "phish-rm",
+    "title": "Example Jam (live, 2026-01-29)",
+    "artist": "Band name",
+    "url": "music/example-jam.flac",
+    "license": {
+      "grantedBy": "Band management / label / publisher contact (name, email)",
+      "grantedTo": "Daniel, for Agent World",
+      "scope": "Stream inside Agent World, non-commercial, no downloads",
+      "date": "2026-11-01",
+      "expires": "none",
+      "proof": "permissions/example-jam-permission.pdf",
+      "covers": ["sound recording", "composition"]
+    }
+  },
+  "tracks": []
+}

@@ -1,0 +1,423 @@
+{
+ "generated": "2026-10-19T04:59:37.906Z",
+ "tool": "tools/rsi/build_loop.mjs",
+ "harness": "Measured by the Keystone build loop in headless Chrome with SwiftShader software rendering (1280\u00d7800, high quality locked, Show Buddies sample data). Draw calls are renderer-independent; frame times there are not real-GPU numbers (Rule K1). Each kept change also passed a pixel-diff gate against deterministic (?vtest=1) frames.",
+ "score": "Build score = draw calls per frame summed over the home, Show Island and Moon Palace views (lower is better). A candidate is kept if it cuts that by \u22652% (or, for the LED-wall change, cuts the Show Island frame period \u22655% or CPU time \u226510% without adding draw calls), with zero script errors and \u22640.5% changed pixels (mean |\u0394| \u22641.0) in every view.",
+ "nullTest": {
+  "home": {
+   "meanAbs": 0.003,
+   "changedPct": 0.006,
+   "pixels": 912640
+  },
+  "show": {
+   "meanAbs": 0.002,
+   "changedPct": 0.005,
+   "pixels": 912640
+  },
+  "mp": {
+   "meanAbs": 0.003,
+   "changedPct": 0.006,
+   "pixels": 912640
+  }
+ },
+ "accepted": [
+  "batch",
+  "casters"
+ ],
+ "generations": [
+  {
+   "id": "G0",
+   "title": "v1.2.0 baseline (the build Daniel received on Oct 17)",
+   "accepted": true,
+   "env": "software",
+   "envLabel": "headless Chrome + SwiftShader",
+   "flags": [],
+   "metrics": {
+    "home": {
+     "frames": 14,
+     "calls": 1588,
+     "tris": 718258,
+     "cpu_ms": 13.5,
+     "period_ms": 517.6,
+     "meshes": 1023,
+     "casters": 853,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 11,
+     "calls": 1271,
+     "tris": 640347,
+     "cpu_ms": 5.2,
+     "period_ms": 627.5,
+     "meshes": 1023,
+     "casters": 853,
+     "quality": "high"
+    }
+   },
+   "metric": null,
+   "note": "baseline; v1.2.0 reads live Show Buddies data (G1 and later use the saved sample, so the fan count can differ by a few)"
+  },
+  {
+   "id": "G1",
+   "title": "the v2.0 features (Keystone Claude, Moon Palace pack, layout search, evolving dialog)",
+   "accepted": true,
+   "env": "software",
+   "envLabel": "headless Chrome + SwiftShader",
+   "flags": [],
+   "metrics": {
+    "home": {
+     "frames": 12,
+     "calls": 1518,
+     "tris": 782513,
+     "cpu_ms": 12.6,
+     "period_ms": 601.7,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 8,
+     "calls": 1210,
+     "tris": 715746,
+     "cpu_ms": 8.7,
+     "period_ms": 773.9,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    },
+    "mp": {
+     "frames": 14,
+     "calls": 500,
+     "tris": 463551,
+     "cpu_ms": 5,
+     "period_ms": 570.6,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    }
+   },
+   "metric": {
+    "label": "draw calls per frame at the home view",
+    "before": 1588,
+    "after": 1518,
+    "pct": -4.4
+   },
+   "exceptions": 0,
+   "kind": "feature",
+   "extra": "and the new Moon Palace view adds 500"
+  },
+  {
+   "id": "G2",
+   "title": "static batching (merge never-moving meshes per material)",
+   "accepted": true,
+   "env": "software",
+   "envLabel": "headless Chrome + SwiftShader",
+   "flags": [
+    "batch"
+   ],
+   "metrics": {
+    "home": {
+     "frames": 15,
+     "calls": 1014,
+     "tris": 783017,
+     "cpu_ms": 4.2,
+     "period_ms": 467.9,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 13,
+     "calls": 868,
+     "tris": 718150,
+     "cpu_ms": 4.3,
+     "period_ms": 547.1,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    },
+    "mp": {
+     "frames": 19,
+     "calls": 386,
+     "tris": 463067,
+     "cpu_ms": 2.8,
+     "period_ms": 416.7,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    }
+   },
+   "metric": {
+    "label": "draw calls per frame at the home view",
+    "before": 1518,
+    "after": 1014,
+    "pct": -33.2
+   },
+   "totals": {
+    "callsAllViewsBefore": 3232,
+    "callsAllViewsAfter": 2268,
+    "pctAllViews": -29.8,
+    "periodPctByView": {
+     "home": -6.4,
+     "show": -0.7,
+     "mp": -3.9
+    },
+    "showCpuPct": -6.5
+   },
+   "control": {
+    "home": {
+     "frames": 14,
+     "calls": 1518,
+     "tris": 782513,
+     "cpu_ms": 8.8,
+     "period_ms": 499.8,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 13,
+     "calls": 1214,
+     "tris": 716530,
+     "cpu_ms": 4.6,
+     "period_ms": 551,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    },
+    "mp": {
+     "frames": 18,
+     "calls": 500,
+     "tris": 463551,
+     "cpu_ms": 3,
+     "period_ms": 433.6,
+     "meshes": 1162,
+     "casters": 967,
+     "quality": "high"
+    }
+   },
+   "gates": {
+    "exceptions": 0,
+    "visual": {
+     "home": {
+      "meanAbs": 0.001,
+      "changedPct": 0,
+      "pixels": 912640
+     },
+     "show": {
+      "meanAbs": 0.001,
+      "changedPct": 0,
+      "pixels": 912640
+     },
+     "mp": {
+      "meanAbs": 0.004,
+      "changedPct": 0.006,
+      "pixels": 912640
+     }
+    },
+    "timing": {
+     "home": -6.4,
+     "show": -0.7,
+     "mp": -3.9
+    },
+    "threshold": {
+     "changedPct": 0.5,
+     "meanAbs": 1,
+     "periodRegressPct": 10
+    }
+   }
+  },
+  {
+   "id": "G3",
+   "title": "shadow-caster culling (tiny meshes stop casting shadows)",
+   "accepted": true,
+   "env": "software",
+   "envLabel": "headless Chrome + SwiftShader",
+   "flags": [
+    "batch",
+    "casters"
+   ],
+   "metrics": {
+    "home": {
+     "frames": 15,
+     "calls": 911,
+     "tris": 751141,
+     "cpu_ms": 3.8,
+     "period_ms": 454.6,
+     "meshes": 810,
+     "casters": 496,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 13,
+     "calls": 793,
+     "tris": 696122,
+     "cpu_ms": 3.8,
+     "period_ms": 527.6,
+     "meshes": 810,
+     "casters": 496,
+     "quality": "high"
+    },
+    "mp": {
+     "frames": 17,
+     "calls": 325,
+     "tris": 446951,
+     "cpu_ms": 2.8,
+     "period_ms": 429,
+     "meshes": 810,
+     "casters": 496,
+     "quality": "high"
+    }
+   },
+   "metric": {
+    "label": "draw calls per frame at the home view",
+    "before": 1014,
+    "after": 911,
+    "pct": -10.2
+   },
+   "totals": {
+    "callsAllViewsBefore": 2269,
+    "callsAllViewsAfter": 2029,
+    "pctAllViews": -10.6,
+    "periodPctByView": {
+     "home": -0.4,
+     "show": -0.6,
+     "mp": 2.7
+    },
+    "showCpuPct": 2.7
+   },
+   "control": {
+    "home": {
+     "frames": 15,
+     "calls": 1014,
+     "tris": 783017,
+     "cpu_ms": 3.9,
+     "period_ms": 456.2,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    },
+    "show": {
+     "frames": 13,
+     "calls": 867,
+     "tris": 717870,
+     "cpu_ms": 3.7,
+     "period_ms": 530.7,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    },
+    "mp": {
+     "frames": 19,
+     "calls": 388,
+     "tris": 463611,
+     "cpu_ms": 2.8,
+     "period_ms": 417.6,
+     "meshes": 804,
+     "casters": 684,
+     "quality": "high"
+    }
+   },
+   "gates": {
+    "exceptions": 0,
+    "visual": {
+     "home": {
+      "meanAbs": 0.001,
+      "changedPct": 0,
+      "pixels": 912640
+     },
+     "show": {
+      "meanAbs": 0.001,
+      "changedPct": 0,
+      "pixels": 912640
+     },
+     "mp": {
+      "meanAbs": 0.002,
+      "changedPct": 0.006,
+      "pixels": 912640
+     }
+    },
+    "timing": {
+     "home": -0.4,
+     "show": -0.6,
+     "mp": 2.7
+    },
+    "threshold": {
+     "changedPct": 0.5,
+     "meanAbs": 1,
+     "periodRegressPct": 10
+    }
+   }
+  }
+ ],
+ "rejected": [
+  {
+   "id": "R1",
+   "flag": "screens",
+   "title": "led walls redraw only on screen and near, at 15 hz",
+   "reason": "no measurable gain (draw calls 0.4%, Show Island frame period -2.1%)",
+   "round": 3,
+   "measured": {
+    "dCalls": 0.4,
+    "periodPct": {
+     "home": 0.4,
+     "show": -2.1,
+     "mp": -15.7
+    },
+    "dCpuShow": 2.7,
+    "diff": {
+     "home": {
+      "meanAbs": 0.001,
+      "changedPct": 0,
+      "pixels": 912640
+     },
+     "show": {
+      "meanAbs": 0.002,
+      "changedPct": 0.006,
+      "pixels": 912640
+     },
+     "mp": {
+      "meanAbs": 0.005,
+      "changedPct": 0.007,
+      "pixels": 912640
+     }
+    },
+    "errors": []
+   }
+  }
+ ],
+ "gpu": {
+  "measured": true,
+  "device": "Apple M4 (the Mac running this session)",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+  "harness": "headless Chrome with ANGLE Metal (real GPU), 1280\u00d7800 at 1\u00d7, high quality locked, Show Buddies sample",
+  "fpsHigh": 59.9,
+  "vsyncCapped": true,
+  "views": {
+   "home": {
+    "callsKept": 906,
+    "callsNone": 1515,
+    "fps": 59.9,
+    "cpuMsKept": 3.6,
+    "cpuMsNone": 4.2
+   },
+   "show": {
+    "callsKept": 791,
+    "callsNone": 1204,
+    "fps": 59.9,
+    "cpuMsKept": 3.5,
+    "cpuMsNone": 3.8
+   },
+   "mp": {
+    "callsKept": 370,
+    "callsNone": 543,
+    "fps": 59.9,
+    "cpuMsKept": 2.9,
+    "cpuMsNone": 3.2
+   }
+  },
+  "notMeasured": "phones, Windows GPUs, and the 2\u00d7 Retina pixel density. The Claude app's browser pane had a 0\u00d70 viewport (window not in view), so that attempt was discarded.",
+  "summary": "Apple M4, headless Chrome on ANGLE Metal (real GPU), 1280\u00d7800 at 1\u00d7, high quality: 60 fps (the display cap) in all three views, with or without the kept optimizations. CPU time per frame: home 4.2 \u2192 3.6 ms, show 3.8 \u2192 3.5 ms, mp 3.2 \u2192 2.9 ms; draw calls: home 1515 \u2192 906, show 1204 \u2192 791, mp 543 \u2192 370. Not yet measured on phones, Windows GPUs or at 2\u00d7 pixel density."
+ },
+ "history": "Run 1 kept casters and rejected batch (1 script error). Run 2 found the error: main.js:222 called $('#loading').remove() without a null check (a race). It was fixed, along with locality-preserving batching and always-dynamic avatar parts. Run 3 (this ledger) kept batch, then casters. Runs 1 and 2 are archived in the evidence."
+}

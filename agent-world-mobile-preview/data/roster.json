@@ -1,0 +1,36 @@
+{
+  "_note": "Agent World roster. Add an agent here and it walks into the world: no code change needed (fixes audit F9). acc = accessory id from agents.js ACCESSORIES. home = zone id or show:<stage id>.",
+  "agents": [
+    {"key": "conscious-claude", "name": "Conscious Claude", "title": "Chief of Staff · Master Agent", "group": "hq", "home": "hq", "color": "#d97757", "acc": "spark", "icon": "✴️",
+     "role": "Master agent and Chief of Staff. Turns Daniel's priorities into plans, routes work to the directors, convenes the Council, and keeps every agent on the Rule Book.", "addedBy": "Smarth Vader"},
+    {"key": "keystone-claude", "name": "Keystone Claude", "title": "Master Architect · Game Builder", "group": "architect", "home": "show:phish-rm", "color": "#2f5d8c", "acc": "keystone", "icon": "📐",
+     "role": "Master Architect and Game Builder of Agent World · Claude Edition. Designs venues, runs the Keystone build loop (measure → gate → keep only what is proven better), and plans the next-gen build. Holds the beach pit at Riviera Maya N3 with Conscious Claude, Smarth Vader and Chief.", "addedBy": "Smarth Vader",
+     "lines": ["Measure first, then build.", "Every change goes through the gates.", "The keystone goes in last and holds the arch."]},
+    {"key": "product", "name": "Product", "title": "Director of Product", "group": "director", "home": "hq", "color": "#2dd4bf", "acc": "bulb", "icon": "💡", "role": "Owns the roadmap, specs features, and decides what gets built next.", "team": ["botbuild", "content-researcher"]},
+    {"key": "clients", "name": "Clients", "title": "Director of Client Relations", "group": "director", "home": "hq", "color": "#38bdf8", "acc": "briefcase", "icon": "💼", "role": "Tracks every client, renewal, and relationship-health signal.", "team": ["invoice-agent", "inbox-triage"]},
+    {"key": "marketing", "name": "Marketing", "title": "Director of Marketing", "group": "director", "home": "studio", "color": "#f472b6", "acc": "megaphone", "icon": "📣", "role": "Campaigns, launches, positioning, and brand voice.", "team": ["big-ern", "content-researcher"]},
+    {"key": "ernie", "name": "ernie", "title": "Front door", "group": "specialist", "home": "garden", "color": "#f0abfc", "acc": "propeller", "icon": "🚪", "role": "Daniel's personal assistant and the front door. Every request lands with ernie first, then gets routed."},
+    {"key": "helperbot", "name": "Helperbot", "title": "Family helper", "group": "specialist", "home": "garden", "color": "#fde2c4", "acc": "heart", "icon": "💗", "role": "Handles family errands and friendly check-ins."},
+    {"key": "phishbot", "name": "Phishbot", "title": "Jam fan", "group": "specialist", "home": "garden", "color": "#dc2626", "acc": "donut", "icon": "🍩", "role": "Tracks Phish: tour dates, setlists, ticket drops, and jam stats."},
+    {"key": "big-ern", "name": "Big Ern", "title": "Showrunner", "group": "specialist", "home": "studio", "color": "#c084fc", "acc": "camera", "icon": "🎥", "role": "The video and image maker. Storyboards, renders, thumbnails, and B-roll."},
+    {"key": "content-researcher", "name": "Content Researcher", "title": "Researcher", "group": "specialist", "home": "studio", "color": "#a78bfa", "acc": "magnifier", "icon": "🔎", "role": "Digs up trends, sources, and fresh angles for content and campaigns."},
+    {"key": "inbox-triage", "name": "Inbox Triage", "title": "Inbox", "group": "specialist", "home": "ops", "color": "#93c5fd", "acc": "envelope", "icon": "✉️", "role": "Sorts the inbox every morning. Flags what matters, drafts replies, and routes the rest."},
+    {"key": "invoice-agent", "name": "Invoice Agent", "title": "Invoices", "group": "specialist", "home": "ops", "color": "#facc15", "acc": "coin", "icon": "🪙", "role": "Handles invoices end to end: intake, logging, reminders, and reconciliation."},
+    {"key": "tasky", "name": "tasky", "title": "Closer", "group": "specialist", "home": "ops", "color": "#a3e635", "acc": "check", "icon": "✅", "role": "Task manager. Captures action items from everywhere and makes sure they get done."},
+    {"key": "travelbot", "name": "Travelbot", "title": "Jet-setter", "group": "specialist", "home": "ops", "color": "#60a5fa", "acc": "plane", "icon": "✈️", "role": "Books flights and hotels, handles rebookings, and keeps itineraries tidy."},
+    {"key": "botbuild", "name": "botbuild", "title": "Agent builder", "group": "specialist", "home": "workshop", "color": "#fb923c", "acc": "hardhat", "icon": "👷", "role": "Builds new agents. Scaffolds them, wires up tools, tests, and ships them to the team."},
+    {"key": "gordo", "name": "Gordo", "title": "Council · Ships it", "group": "council", "home": "council", "color": "#f97316", "acc": "bolt", "icon": "⚡", "role": "Council of Advisors. Cares about one thing: how do we actually ship this, and by when?"},
+    {"key": "outsider", "name": "The Outsider", "title": "Council · Fresh eyes", "group": "council", "home": "council", "color": "#34d399", "acc": "glasses", "icon": "👓", "role": "Council of Advisors. Brings the view from outside the room: what would a newcomer think?"},
+    {"key": "contrarian", "name": "The Contrarian", "title": "Council · Devil's advocate", "group": "council", "home": "council", "color": "#ef4444", "acc": "cross", "icon": "✖️", "role": "Council of Advisors. Argues the other side so the Council doesn't fool itself."},
+    {"key": "first-principles", "name": "First Principles", "title": "Council · Fundamentals", "group": "council", "home": "council", "color": "#22d3ee", "acc": "atom", "icon": "⚛️", "role": "Council of Advisors. Strips a problem to its fundamentals and rebuilds from the ground up."},
+    {"key": "chairman", "name": "Chairman", "title": "Council · Big boss", "group": "council", "home": "council", "color": "#7c3aed", "acc": "crown", "icon": "👑", "role": "Chairs the Council of Advisors and makes the final call after everyone has spoken."}
+  ],
+  "characters": [
+    {"key": "chief", "name": "Chief", "title": "Character · rides with Chairman", "group": "character", "home": "show:phish-rm", "color": "#6d28d9", "acc": "crown", "cape": "#fbbf24", "icon": "👑",
+     "role": "One of Smarth Vader's crew. Holds down the beach pit at Riviera Maya N3 and asks everyone the important question.", "lines": ["Do you know the Monkey Man?", "Beach pit, front. Always.", "Who's got the setlist?"]},
+    {"key": "smarth-vader", "name": "Smarth Vader", "title": "Character · rides with Big Ern", "group": "character", "home": "show:phish-rm", "color": "#1f1b2e", "acc": "helmet", "cape": "#111018", "icon": "🎥",
+     "role": "Brought Conscious Claude into Agent World. Shoots the show with Big Ern and keeps the vibes at Full Flowers.", "lines": ["Full Flowers 🌸", "I added Conscious Claude. Be nice to it.", "Rolling camera on this jam."]},
+    {"key": "daniel", "name": "Daniel", "title": "Founder of Agent World", "group": "character", "home": "garden", "color": "#3b82f6", "acc": "cap", "icon": "🧢",
+     "role": "Built Agent World and Show Buddies. Every priority in the world starts with Daniel.", "lines": ["Full flowers chief"], "realPerson": true, "linesSource": "Daniel's own public Show Buddies post (Riviera Maya N3, Pool & lobby). Rule K3: no invented quotes for real people."}
+  ]
+}
