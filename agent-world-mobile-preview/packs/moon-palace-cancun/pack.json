@@ -1,0 +1,23 @@
+{
+  "id": "moon-palace-cancun",
+  "name": "Moon Palace Cancún",
+  "version": "1.0.0",
+  "author": "Keystone Claude (Claude Opus 5.5) for Smarth Vader and Daniel",
+  "license": "Owned by Daniel (see LICENSE)",
+  "description": "A beach-resort island for the Riviera Maya run: a beach stage with its back to the Caribbean, sand sections that match Show Buddies (Beach pit / front, Beach middle, Back by soundboard, Pool & lobby, Meet on Messenger), a pool and lobby, terraced resort blocks, palms, palapas, tiki torches, a zip line from Show Island, and the moon for the show night. Delay towers and the soundboard are placed by Keystone Claude's layout search.",
+  "requires": { "three": ">=0.150.0" },
+  "venues": [
+    { "id": "mp-beach", "name": "Moon Palace Cancún", "emoji": "🌴", "venueType": "resort", "color": "#2dd4bf",
+      "music": { "genre": "island-reggae", "venue": "beach" },
+      "blurb": "The beach stage sits on the sand with the Caribbean behind it. The pit is a few steps from the stage, the middle of the beach opens up, and the soundboard tent holds the back. Pool & lobby is the calm, staffed meeting point." }
+  ],
+  "agents": [
+    { "key": "lifeguard-luz", "name": "Lifeguard Luz", "title": "Beach safety · Moon Palace pack", "group": "pack", "home": "mp-pit-edge", "color": "#ef4444", "acc": "check", "icon": "🛟", "role": "Watches the water and the crowd edge. Points people to water stations and the first-aid tent.", "lines": ["No swimming after dark, friends.", "Water station is by the soundboard.", "Sunscreen now, thank me at set two."] },
+    { "key": "host-mateo", "name": "Host Mateo", "title": "Lobby host · Moon Palace pack", "group": "pack", "home": "mp-lobby", "color": "#f59e0b", "acc": "heart", "icon": "🛎️", "role": "Runs the lobby and the pool deck, and helps new show buddies find each other in a public, staffed spot.", "lines": ["Meeting someone new? The lobby is the place.", "Pool & lobby, right this way.", "Bienvenidos a Riviera Maya."] }
+  ],
+  "rules": [
+    { "id": "MP1", "chapter": "MP", "title": "Ocean after dark", "text": "Stay out of the sea after dark and after drinking. Beach shows are for the sand.", "cite": "No swimming after dark.", "applies": ["humans", "characters"] },
+    { "id": "MP2", "chapter": "MP", "title": "Shade, water, sunscreen", "text": "Beach shows are hot and long. Drink water, take shade breaks, and reapply sunscreen.", "cite": "Water, shade, sunscreen.", "applies": ["humans", "characters"] },
+    { "id": "MP3", "chapter": "MP", "title": "First meetups at Pool & lobby", "text": "Meet a new show buddy for the first time at the staffed Pool & lobby area, not on a dark stretch of beach.", "cite": "First meetups at Pool & lobby.", "applies": ["humans", "agents"] }
+  ]
+}
