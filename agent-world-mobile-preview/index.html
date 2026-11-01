@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" data-phone-first="1">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Agent World · Claude Edition (phone preview)</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="aw-preview" content="phone-first-gh">
+<meta name="description" content="Daniel's Agent World, rebuilt by Claude agents: Keystone Claude (Master Architect) and Conscious Claude (Chief of Staff). Moon Palace beach show, a measured build loop, evolving dialog, live band audio and an interactive Rule Book.">
+<meta name="theme-color" content="#1b1535">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%E2%9C%B4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: full-bleed 3D canvas with glass HUD islands floating at the corners (kept close to the original Agent World look). */
+:root{
+  --glass: rgba(24,19,48,.66); --glass-2: rgba(36,28,70,.82); --line: rgba(255,255,255,.13);
+  --txt: #f3eefe; --mute: #b9b0d6; --acc: #ffc27a; --acc2: #7ef0e4; --cc: #d97757; --bg: #1b1535;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif; --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 16px; --pad: 14px;
+  color-scheme: dark;
+}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+#app{position:fixed;inset:0}
+#app canvas{display:block;touch-action:none}
+.labels{position:fixed!important;inset:0;pointer-events:none}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc2);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 10px 40px rgba(10,6,30,.35)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,194,122,.45);background:linear-gradient(180deg,rgba(255,194,122,.22),rgba(255,194,122,.08));color:var(--txt);border-radius:999px;padding:8px 14px;cursor:pointer;text-decoration:none;font-weight:600;white-space:nowrap}
+.btn:hover{background:rgba(255,194,122,.3)}
+.btn.ghost{border-color:var(--line);background:rgba(255,255,255,.05)}
+.btn.sm{padding:5px 11px;font-size:12.5px}
+.x{position:absolute;top:8px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);cursor:pointer;font-size:18px;line-height:1}
+.mute{color:var(--mute)} .fine{color:var(--mute);font-size:11.5px;margin:6px 0 0}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--mute);margin-right:6px;vertical-align:1px}
+.tag.live{color:#0b2a1e;background:#5ef0a8;border-color:#5ef0a8} .tag.sim{color:var(--acc)}
+h2,h3{font-family:var(--display);text-wrap:balance}
+h2{margin:0;font-size:20px;letter-spacing:-.01em} h3{margin:16px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--acc)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* HUD positions honour phone safe areas */
+#brand{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:calc(12px + env(safe-area-inset-left,0px));padding:12px var(--pad);max-width:min(560px,calc(100vw - 24px));z-index:5}
+#brand .title{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em}
+#brand .title span{background:linear-gradient(90deg,var(--acc),#ff8fb6,var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#brand .sub{color:var(--mute);font-size:12.5px;margin:2px 0 10px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#5ef0a8;box-shadow:0 0 10px #5ef0a8;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+#xp{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));padding:12px var(--pad);width:300px;z-index:5}
+#xp .lv{font-family:var(--display);font-weight:800;font-size:18px}
+.bar{height:7px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin:6px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#ff7fa8,var(--acc));transition:width .5s}
+#xptext{color:var(--mute);font-size:11.5px;font-variant-numeric:tabular-nums}
+#badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(255,194,122,.18);border:1px solid rgba(255,194,122,.4)}
+.badge.locked{opacity:.45;background:transparent;border-color:var(--line);filter:grayscale(1)}
+#feedbox{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100vw - 24px));padding:10px var(--pad);z-index:4}
+#feedbox h2{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);font-family:var(--body);font-weight:700;margin-bottom:4px}
+#feed{list-style:none;margin:0;padding:0;font-size:12.5px;display:grid;gap:3px;max-height:150px;overflow:hidden}
+#feed li{animation:in .4s ease} #feed .ts{color:var(--mute);font-size:10.5px;margin-right:6px;font-variant-numeric:tabular-nums} #feed .dim{color:var(--mute)} #feed a{color:var(--acc2)}
+@keyframes in{from{opacity:0;transform:translateY(-4px)}}
+#audiobox{position:fixed;right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));width:330px;padding:12px var(--pad);z-index:4}
+#audiobox .arow{display:flex;gap:10px;align-items:center}
+#a-vol{flex:1;accent-color:var(--acc)}
+#a-now{margin:8px 0 0;font-size:12.5px}
+#panel{position:fixed;right:calc(12px + env(safe-area-inset-right,0px));top:calc(170px + env(safe-area-inset-top,0px));bottom:calc(150px + env(safe-area-inset-bottom,0px));width:360px;padding:16px var(--pad) 18px;overflow:auto;z-index:6;background:var(--glass-2)}
+.p-head{display:flex;gap:12px;align-items:center;margin-right:34px}
+.av{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:color-mix(in oklab,var(--c,#888) 45%,transparent);border:1px solid var(--line);flex:none}
+.act{background:rgba(255,255,255,.06);border-radius:10px;padding:8px 10px;margin:0}
+.note{background:rgba(217,119,87,.18);border:1px solid rgba(217,119,87,.45);border-radius:10px;padding:8px 10px}
+.post{background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px;margin:0 0 6px;font-size:13px}.post q{display:block;margin-top:4px;color:var(--txt);font-style:italic}
+.rl{margin:0;padding-left:16px}.rl a,#panel a:not(.btn){color:var(--acc2)}
+.shows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.shows li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px}
+.shows span{grid-column:1;color:var(--mute);font-size:12px}.shows em{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:12px;color:var(--acc)}
+.fans{display:flex;flex-wrap:wrap;gap:6px}
+.fanbtn{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:1px;border:1px solid var(--line);border-left:3px solid var(--c,var(--acc));background:rgba(255,255,255,.05);border-radius:10px;padding:7px 10px;cursor:pointer;min-width:0}
+.fanbtn small{color:var(--mute);font-size:11px}
+#panel>.btn{margin-top:12px}
+#sheet{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,calc(100vw - 24px));max-height:min(80vh,760px);overflow:auto;padding:20px 20px 22px;z-index:8;background:var(--glass-2)}
+.stagegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:12px}
+.stagebtn{display:grid;gap:3px;text-align:left;padding:14px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in oklab,var(--c) 30%,transparent),rgba(255,255,255,.03));cursor:pointer}
+.stagebtn .se{font-size:26px}.stagebtn small{color:var(--mute)}
+#toasts{position:fixed;top:calc(90px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:grid;gap:8px;z-index:20;pointer-events:none}
+.toast{display:flex;gap:10px;align-items:center;padding:10px 14px;animation:in .3s ease;transition:opacity .5s,transform .5s}
+.toast.out{opacity:0;transform:translateY(-8px)} .toast .ti{font-size:20px} .toast small{display:block;color:var(--mute)}
+#sheet code,#panel code{color:var(--acc2);font-size:12.5px}
+#hint.gone{opacity:0;transition:opacity 1s}
+#hint{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);margin:0;color:rgba(243,238,254,.75);font-size:12px;text-shadow:0 1px 6px rgba(0,0,0,.6);pointer-events:none;white-space:nowrap}
+#confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:30}
+#loading{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;background:radial-gradient(circle at 50% 40%,#3a2a66,#1b1535 70%);z-index:50;transition:opacity .7s}
+#loading.gone{opacity:0;pointer-events:none} #loading p{font-family:var(--display);font-size:18px}
+.ld-orb{width:54px;height:54px;border-radius:50%;background:conic-gradient(var(--acc),#ff8fb6,var(--acc2),var(--acc));animation:spin 1.2s linear infinite;-webkit-mask:radial-gradient(circle,transparent 55%,#000 56%);mask:radial-gradient(circle,transparent 55%,#000 56%)}
+@keyframes spin{to{transform:rotate(1turn)}}
+
+/* world-space labels */
+.lbl{font:600 12px var(--body);padding:4px 10px;border-radius:999px;background:rgba(24,19,48,.72);border:1px solid var(--line);white-space:nowrap;text-align:center;transition:opacity .35s;pointer-events:none}
+.lbl small{display:block;font-weight:500;color:var(--mute);font-size:10.5px}
+.lbl.zone{font-size:13px} .lbl.big{font-size:16px;padding:6px 14px}
+.lbl.stage{border-color:var(--c);pointer-events:auto;cursor:pointer;font-size:13.5px;box-shadow:0 0 18px color-mix(in oklab,var(--c) 45%,transparent)}
+.lbl.hid,.ag.hid .nm{opacity:0!important;pointer-events:none!important}
+.ag{display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none}
+.ag .nm{pointer-events:auto;cursor:pointer;font:600 11.5px var(--body);padding:2px 8px;border-radius:999px;background:rgba(24,19,48,.72);border:1px solid color-mix(in oklab,var(--c) 70%,transparent);transition:opacity .35s}
+.ag.cc .nm{background:linear-gradient(90deg,rgba(217,119,87,.85),rgba(255,154,107,.85));border-color:#ffb08f;color:#fff}
+.ag.char .nm{border-width:2px}
+.ag.fan .nm{font-size:10.5px;opacity:.9}
+.bub{max-width:220px;white-space:normal;font:500 12px/1.35 var(--body);background:#fff;color:#221a3a;padding:7px 10px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;animation:in .25s ease}
+.bub::after{content:"";position:absolute;bottom:-6px;left:50%;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#fff}
+.ag.cc .bub{border:2px solid var(--cc)}
+/* v2.0 Keystone build */
+#brand .ver{font:600 11px var(--body);color:var(--mute);margin-left:6px;letter-spacing:.02em;-webkit-text-fill-color:var(--mute)}
+.ag.ks .nm{background:linear-gradient(90deg,rgba(47,93,140,.92),rgba(217,119,87,.92));border-color:#9cc3ff;color:#fff}
+.ag.ks .bub{border:2px solid #5b8fd1}
+.ks-score{display:flex;align-items:baseline;gap:10px}.ks-score b{font:800 34px var(--display);font-variant-numeric:tabular-nums}
+.spark{width:100%;height:56px;display:block;background:rgba(255,255,255,.04);border-radius:10px;margin:4px 0}.spark .sp{fill:var(--mute);font-size:9px}
+.ksbars{display:grid;gap:5px;margin:8px 0}.kb{display:grid;grid-template-columns:150px 1fr 44px;gap:8px;align-items:center;font-size:12px}
+.kb i{display:block;height:7px;border-radius:9px;background:linear-gradient(90deg,var(--acc2) var(--w),rgba(255,255,255,.1) var(--w))}.kb b{text-align:right;font-variant-numeric:tabular-nums}
+table.ledger{width:100%;border-collapse:collapse;font-size:12px}.ledger th,.ledger td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.ledger th{color:var(--mute);font-weight:600}.ledger tr.rej td{color:var(--mute)}
+.dlog{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;font-size:13px}.dlog li{background:rgba(255,255,255,.05);border-radius:10px;padding:7px 10px}.dlog b{margin-right:6px}
+
+/* Rule Book overlay */
+#rulebook{position:fixed;inset:0;z-index:40;background:rgba(12,8,28,.6);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#rulebook[hidden]{display:none}
+.rb-card{position:relative;width:min(860px,100%);max-height:100%;display:flex;flex-direction:column;background:#211a42;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.rb-head{padding:20px 22px 6px;background:linear-gradient(135deg,rgba(255,194,122,.18),rgba(126,240,228,.08))}
+.rb-head h2{font-size:28px;font-weight:800}
+.eyebrow{margin:0 0 4px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.rb-tools{padding:10px 22px 12px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
+.sin{width:100%;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:12px;color:var(--txt);padding:10px 12px;font:inherit}
+.sin.sm{width:auto;padding:5px 8px;font-size:12.5px;border-radius:999px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:4px 11px;font-size:12px;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--acc);color:#2a1a08;border-color:var(--acc);font-weight:700}
+.rb-body{overflow:auto;padding:6px 22px 18px}
+.rb-ch>h3{font-size:13px;margin-top:20px}.rb-ch>p{margin:0 0 8px;font-size:12.5px}
+.rule{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 8px;transition:box-shadow .6s}
+.rule.flash{box-shadow:0 0 0 2px var(--acc2)}
+.rhead{display:flex;gap:10px;align-items:baseline}.rhead h4{margin:0;font:700 15px var(--display)}
+.rid{font:700 12px ui-monospace,Menlo,monospace;color:#2a1a08;background:var(--acc);border-radius:6px;padding:1px 6px}
+.rtext{margin:6px 0 4px;max-width:68ch}.rcite{margin:0 0 8px;color:var(--acc2);font-style:italic;font-size:13px}
+.rmeta{margin-bottom:8px}.ractions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.ack{display:flex;gap:6px;align-items:center}
+.acks{margin:8px 0 0;font-size:12px;color:#5ef0a8}
+.rb-foot{padding:10px 22px 14px;font-size:12px;color:var(--mute);border-top:1px solid var(--line)}.rb-foot code{color:var(--acc2)}
+
+
+/* --- Phone-first + 1280px overflow fixes (Product, Oct 31 2026) --- */
+#sheet{z-index:20}
+#sheet .sheet-body{max-height:min(70vh,640px);overflow:auto;-webkit-overflow-scrolling:touch}
+html,body{overflow-x:hidden;max-width:100vw}
+#brand,#xp,#feedbox,#audiobox,#panel,#sheet{max-width:calc(100vw - 16px)}
+#sheet{padding-top:44px} /* close (×) never covers welcome text */
+.sheet-body{padding-right:8px}
+.btn{min-height:36px;-webkit-tap-highlight-color:transparent}
+.btn.sm{min-height:36px;padding:8px 12px}
+#phone-dock,#lookpad,#zoompad{display:none}
+@media (max-width: 1280px){
+  /* Known bug: Festival Grounds pill + sound slider cut off at 1280px */
+  #brand{max-width:min(480px,calc(100vw - 340px))}
+  #xp{width:min(260px,calc(100vw - 520px));padding:10px 12px}
+  #audiobox{width:min(300px,calc(100vw - 24px));max-width:calc(100vw - 24px)}
+  #brand nav{max-width:100%}
+  #brand .btn.sm{padding:7px 10px;font-size:12px}
+}
+@media (max-width: 900px){
+  #xp{display:none}
+  #brand{right:calc(12px + env(safe-area-inset-right,0px));max-width:none;left:calc(12px + env(safe-area-inset-left,0px))}
+  #brand .title{font-size:16px}
+  #brand nav .ghost{display:none}
+  #feedbox{bottom:calc(118px + env(safe-area-inset-bottom,0px));width:auto;right:calc(12px + env(safe-area-inset-right,0px));left:calc(12px + env(safe-area-inset-left,0px))}
+  #feed{max-height:56px}
+  #audiobox{left:calc(12px + env(safe-area-inset-left,0px));right:calc(12px + env(safe-area-inset-right,0px));width:auto;padding:10px 12px}
+  #audiobox .fine{display:none}
+  #a-now{font-size:11.5px;margin-top:4px}
+  #panel{left:calc(8px + env(safe-area-inset-left,0px));right:calc(8px + env(safe-area-inset-right,0px));width:auto;top:auto;bottom:calc(72px + env(safe-area-inset-bottom,0px));max-height:55vh}
+  #hint{display:none}
+  .nomob{display:none}
+  #brand .ver{display:none}
+}
+@media (max-width: 760px),(pointer:coarse){
+  #phone-dock{display:flex;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:12;gap:8px;padding:8px 10px;align-items:center;justify-content:center;width:min(420px,calc(100vw - 16px));box-sizing:border-box}
+  #phone-dock .btn{flex:1;justify-content:center;min-height:48px;font-size:14px;padding:10px 8px}
+  #lookpad{display:block;position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));width:118px;height:118px;border-radius:50%;z-index:11;background:rgba(24,19,48,.45);border:1px solid var(--line);touch-action:none;-webkit-user-select:none;user-select:none}
+  #lookpad .knob{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,194,122,.55);border:1px solid rgba(255,194,122,.8);pointer-events:none}
+  #zoompad{display:flex;position:fixed;right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));flex-direction:column;gap:8px;z-index:11}
+  #zoompad .btn{width:48px;height:48px;min-height:48px;padding:0;justify-content:center;font-size:22px;border-radius:14px}
+  #feedbox{bottom:calc(188px + env(safe-area-inset-bottom,0px));padding:8px 12px}
+  #audiobox{bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+  #brand{padding:10px 12px}
+  #brand nav{gap:6px}
+  #b-daniel{display:none} /* welcome is one-shot; keep via Agents if needed */
+  .btn.sm{min-height:44px;padding:10px 12px}
+  #a-on{min-height:44px}
+  #a-vol{min-height:44px}
+}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="loading" role="status"><div class="ld-orb"></div><p>Waking up Agent World…</p></div>
+
+<header id="brand" class="glass">
+  <div class="title">Agent World <span>· Claude Edition</span><small class="ver">v2.0 · Keystone build</small></div>
+  <div class="sub"><span class="dot" aria-hidden="true"></span><span id="simtxt">Simulated live collaboration</span><span id="fps"></span><span id="sbstate" class="tag sim">Show Buddies: loading</span></div>
+  <nav class="row" aria-label="World controls">
+    <button type="button" class="btn sm" id="b-daniel">💌 For Daniel</button>
+    <button type="button" class="btn sm" id="b-agents">👥 Agents</button>
+    <button type="button" class="btn sm" id="b-shows">🎸 Shows</button>
+    <button type="button" class="btn sm" id="b-rules">📜 Rule Book</button>
+    <button type="button" class="btn sm ghost" id="b-home">🏝️ Home</button>
+    <button type="button" class="btn sm ghost" id="b-tod">🌇 Dusk</button>
+    <button type="button" class="btn sm ghost" id="b-q">Graphics: High</button>
+    <button type="button" class="btn sm ghost" id="b-sim">⏸ Pause sim</button>
+  </nav>
+</header>
+
+<aside id="xp" class="glass" aria-label="Your progress">
+  <div class="lv">Lv <span id="lvl">1</span></div>
+  <div class="bar"><i id="xpfill"></i></div>
+  <div id="xptext"></div>
+  <div id="badges"></div>
+</aside>
+
+<section id="feedbox" class="glass" aria-label="Live activity">
+  <h2>Live activity <span class="tag sim">simulated</span></h2>
+  <ul id="feed" aria-live="polite"></ul>
+</section>
+
+<section id="audiobox" class="glass" aria-label="Live band audio">
+  <div class="arow">
+    <button type="button" class="btn" id="a-on" aria-pressed="false">🔊 Turn on band sound</button>
+    <label class="sr" for="a-vol">Volume</label><input type="range" id="a-vol" min="0" max="1" step="0.01" value="0.8">
+  </div>
+  <p id="a-now" class="mute">Sound is off. Fly to a stage and turn it on.</p>
+  <p class="fine">Original live-generated music · 32-bit float · 48 kHz · no lossy codec</p>
+</section>
+
+<aside id="panel" class="glass" hidden aria-live="polite"></aside>
+<div id="sheet" class="glass" hidden role="dialog" aria-modal="false"></div>
+<div id="rulebook" hidden></div>
+<div id="toasts" aria-live="polite"></div>
+<p id="hint">Drag to orbit · Scroll to zoom · Click a stage or agent · On phones: look pad + Shows / Meet bar · 🌴 Moon Palace for the beach show</p>
+
+<div id="lookpad" aria-label="Look around" role="application"><div class="knob" aria-hidden="true"></div></div>
+<div id="zoompad" aria-label="Zoom">
+  <button type="button" class="btn ghost" id="z-in" aria-label="Zoom in">＋</button>
+  <button type="button" class="btn ghost" id="z-out" aria-label="Zoom out">－</button>
+</div>
+<nav id="phone-dock" class="glass" aria-label="Phone actions">
+  <button type="button" class="btn" id="pd-shows">🎸 Shows</button>
+  <button type="button" class="btn" id="pd-agents">👥 Meet</button>
+  <button type="button" class="btn" id="pd-home">🏝️ Home</button>
+</nav>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+  // ?vtest=1 (Keystone build loop's visual-regression gate): seeded Math.random, so every run builds the same world
+  if (/[?&]vtest=1/.test(location.search)) { let s = 1234567; Math.random = () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  // Agent World config. bridge: 'wss://…' for a live agent feed. packs: expansion packs to load.
+  // opt: render optimizations kept by the Keystone build loop (data/build_ledger.json); ?opt=none turns them off.
+  // dialogProvider: optional async function that proposes dialog lines (every line is validated; see src/dialog.js).
+  window.AW_CONFIG = { bridge: null, opt: ['batch', 'casters'], dialogProvider: null, packs: [
+    { adapter: 'packs/festival-grounds/cc-edition-adapter.js', base: 'packs/festival-grounds/' },
+    { adapter: 'packs/hollywood-bowl/cc-edition-adapter.js', base: 'packs/hollywood-bowl/' },
+    { adapter: 'packs/moon-palace-cancun/cc-edition-adapter.js', base: 'packs/moon-palace-cancun/' },
+  ] };
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

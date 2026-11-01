@@ -1,0 +1,275 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Stage 5 (Keystone) build report</title><style>body{font:17px/1.6 system-ui,sans-serif;background:#14162a;color:#e9ebff;max-width:760px;margin:auto;padding:18px}a{color:#ffd23f}h1,h2,h3{line-height:1.25}code{background:#262a4a;padding:1px 5px;border-radius:5px;font-size:.92em}pre{background:#262a4a;padding:12px;border-radius:10px;overflow:auto}table{border-collapse:collapse;display:block;overflow:auto}td,th{border:1px solid #3a3f6a;padding:6px}.top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.top a{background:#2a2f55;color:#fff;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:600}</style></head><body><div class="top"><a href="./">📚 All docs</a><a href="../index.html" target="_top">🎈 Back to Agent World v2</a></div><h1>Agent World · Claude Edition v2.0.0 (Keystone build): Stage 5 report</h1>
+<p><strong>Model:</strong> CLAUDE_OPUS_5.5 (claude-opus-5-5), at the effort level the user selected (Max). <strong>Dates:</strong> 2026-10-18 Pacific (2026-10-19 UTC). <strong>Role:</strong> a new agent, <strong>Keystone Claude</strong> (Master Architect · Game Builder), added to Daniel's Agent World and to the Claude Edition.
+<strong>Referee mode:</strong> design, assumptions, parameter choices, observables and verdicts are kept in separate sections. Every claim is labelled MEASURED, MODELED, VERIFIED (by inspection or test), or UNVERIFIED.</p>
+<h2>0. Verdicts (summary)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Verdict</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V1</td>
+<td>Has Daniel merged the Claude Edition into his live Agent World?</td>
+<td><strong>No, not in production as of 2026-10-18 20:13 PDT.</strong> The front end is the 2026-10-17T09:17Z deploy, its sizes match the Stage-1 audit exactly, and none of 14 Claude Edition markers appear. Local, branch or preview work cannot be seen.</td>
+<td>VERIFIED (production only)</td>
+</tr>
+<tr>
+<td>V2</td>
+<td>New agent named and added</td>
+<td><strong>Keystone Claude</strong>, Master Architect · Game Builder (roster key <code>keystone-claude</code>), with its own helmet, keystone and blueprint tablet.</td>
+<td>VERIFIED (e2e test)</td>
+</tr>
+<tr>
+<td>V3</td>
+<td>Agent entered Daniel's live simulation at Fri Jan 29 · Moon Palace Cancún · Riviera Maya N3</td>
+<td><strong>Yes:</strong> Show Buddies post <code>bf378c7b10ae</code>, "Keystone Claude", Beach pit / front, agent <code>claude</code>, posted 2026-10-19T04:02:16+00:00. It is read back from the public API alongside Conscious Claude, Smarth, Chief, Grey and Daniel.</td>
+<td>VERIFIED (API read-back)</td>
+</tr>
+<tr>
+<td>V4</td>
+<td>Evolving dialog with other agents, which changes with build improvements</td>
+<td><strong>Yes</strong>, fact-driven: 13 scenes, memory, and lines built from the measured ledger and the live layout search. Changing a fact changes what is said (unit test).</td>
+<td>VERIFIED (24/24 Node tests; e2e summit)</td>
+</tr>
+<tr>
+<td>V5</td>
+<td>"RSI" to build a better Agent World</td>
+<td><strong>Delivered as two measured, gated loops, not as model self-modification.</strong> (a) The in-world layout search: seeded, elitist and self-adapting; modeled score 66.8 → 83.7 over 400 generations (Node test). (b) The build loop: kept batch, casters (3228 → 2029 draw calls over 3 views); rejected screens, with reasons logged.</td>
+<td>MEASURED (draw calls, pixels) / MODELED (layout score)</td>
+</tr>
+<tr>
+<td>V6</td>
+<td>List of what Claude needs for a next-gen Agent World</td>
+<td><strong>45 items</strong> (9 P0, 23 P1, 13 P2) with an owner and a status for each, plus a "Working together" proposal (Daniel funds compute, Smarth Vader directs).</td>
+<td>Delivered</td>
+</tr>
+<tr>
+<td>V7</td>
+<td>Other improvements executed</td>
+<td>Rule K3 fix, measured render optimizations, replayable test frames, section-accurate seating, a batching hazard fixed, custody repaired (§5)</td>
+<td>see §5</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Design (what was built)</h2>
+<ol>
+<li><strong>Keystone Claude.</strong> A roster entry (group <code>architect</code>, home at the Riviera Maya pit), an accessory (<code>keystone</code>), a label style, and a Show Buddies identity mapping (handle "Keystone Claude" → the agent, not a generic fan).</li>
+<li><strong>Moon Palace Cancún pack</strong> (<code>packs/moon-palace-cancun</code>). An engine-agnostic three.js module plus a Claude Edition adapter. It has:</li>
+<li>a beach stage facing inland with the sea behind it;</li>
+<li>sand sections that match the Show Buddies sections;</li>
+<li>a pool and lobby, resort blocks with lit windows, palms, palapas and torches;</li>
+<li>a zip line that agents ride (new route legs <code>{ride, dur}</code> in <code>agents.js</code>);</li>
+<li>section-accurate fan seating (a new <code>sim.fanPlacers</code> hook);</li>
+<li>a moon phase for each show night.</li>
+<li><strong>Layout search</strong> (<code>src/architect.js</code>). A seeded (1+λ) evolution strategy (λ = 8). It keeps the best layout (elitist), adapts its step size with the 1/5 success rule (×1.15 or ×0.87 per generation, σ ∈ [0.25, 12] m), changes the number of towers (p = 0.15) and restarts after 60 stalled generations at minimum σ.</li>
+<li><strong>Dialog</strong> (<code>src/dialog.js</code>). It has:</li>
+<li>a scene catalogue with <code>when</code>, <code>weight</code> and <code>remember</code> per scene, plus novelty damping (weight / (1 + 0.6 × times run));</li>
+<li>a mandatory introduction scene;</li>
+<li>memory persisted in <code>localStorage</code>;</li>
+<li>the K3 rule (real people only quoted);</li>
+<li>a validator for optional external providers: speaker in cast, no links, and number grounding against facts plus memory.</li>
+<li><strong>Build loop</strong> (<code>tools/rsi/build_loop.mjs</code>). It runs G0 (v1.2.0) → G1 (v2 features) → greedy rounds over the candidates <code>casters</code>, <code>batch</code> and <code>screens</code>. Gates are: no script errors, and per view ≤ 0.5% changed pixels (max channel |Δ| &gt; 32) with mean |Δ| ≤ 1.0 against deterministic <code>?vtest=1</code> frames. A null test (baseline vs baseline) sets the noise floor.</li>
+<li><strong>Panels.</strong> 📐 Architect (live search, measured ledger, blueprint) and 💬 Dialog (transcript, memory, a summit button).</li>
+</ol>
+<h2>2. Assumptions</h2>
+<ul>
+<li>A1. The layout objective is a <strong>model</strong>:</li>
+<li>point sources with inverse-square spreading;</li>
+<li>cardioid directivity, 0.5(1 + cos θ) with a floor of 0.1;</li>
+<li>incoherent power summation;</li>
+<li>no air absorption, ground reflection, wind or temperature effects.</li>
+<li>A2. Delay towers are time-aligned to arrive 10 ms after the main PA on their own axis (the precedence window). A listener is flagged "echo" when a tower is within 6 dB of the main and arrives &gt; 35 ms late or &gt; 2 ms early.</li>
+<li>A3. Sightlines are straight 2D lines from each listener to the stage centre. Towers are 0.9 m cylinders; the soundboard tent is 2.4 m.</li>
+<li>A4. Venue geometry is an artistic model, not a survey of the real resort. Sections are axis-aligned boxes.</li>
+<li>A5. The moon phase uses mean motion. The reference new moon is 2000-01-06 18:14 UTC and the synodic month is 29.530588853 d. Rise times come from two mean-motion anchors (sunset ≈ 18:15, sunrise ≈ 07:12 local in late January).</li>
+<li>A6. The build loop's frame times come from SwiftShader (software rendering). Only draw-call counts and pixel diffs transfer to real GPUs.</li>
+</ul>
+<h2>3. Parameter choices</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main PA level</td>
+<td>120 dB SPL @ 1 m</td>
+<td>puts the pit just under the 102 dB band edge in the model</td>
+</tr>
+<tr>
+<td>Tower level</td>
+<td>113 dB SPL @ 1 m</td>
+<td>lifts the back section into the band at 8–15 m</td>
+</tr>
+<tr>
+<td>Target band</td>
+<td>92–102 dB</td>
+<td>the top is guideline-inspired (WHO venue guidance ≈ 100 dB(A) 15-min average); not a legal limit</td>
+</tr>
+<tr>
+<td>Score weights</td>
+<td>coverage 0.35, uniformity 0.20, sightlines 0.20, echo-free 0.15, mix accuracy 0.10, −1.5 per tower, −5 per tower pair closer than 4 m</td>
+<td>coverage first, then fairness across the crowd</td>
+</tr>
+<tr>
+<td>ES</td>
+<td>λ = 8, σ₀ = 6 m, 1/5 rule over a 10-generation window, restart after 60 stalled generations</td>
+<td>standard settings</td>
+</tr>
+<tr>
+<td>In-world rate</td>
+<td>1 generation / 0.7 s</td>
+<td>so people can watch it improve</td>
+</tr>
+<tr>
+<td>Build-loop gates</td>
+<td>≤ 0.5% changed pixels, mean |Δ| ≤ 1.0, 0 errors, ≥ 2% fewer draw calls (screens: ≥ 5% period or ≥ 10% CPU)</td>
+<td>about 5× above the measured null-test noise</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Observables (measured)</h2>
+<h3>4.1 Build loop (headless Chrome, SwiftShader, 1280×800, high quality locked)</h3>
+<p>Null test (baseline vs baseline, changed pixels per view): home 0.006%, show 0.005%, mp 0.006%.</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Change</th>
+<th>Home</th>
+<th>Show Island</th>
+<th>Moon Palace</th>
+<th>Total draw calls</th>
+<th>Kept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G0</td>
+<td>v1.2.0 baseline (the build Daniel received on Oct 17)</td>
+<td>1588</td>
+<td>1271</td>
+<td>—</td>
+<td>2859</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>G1</td>
+<td>the v2.0 features (Keystone Claude, Moon Palace pack, layout search, evolving dialog)</td>
+<td>1518</td>
+<td>1210</td>
+<td>500</td>
+<td>3228</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>static batching (merge never-moving meshes per material)</td>
+<td>1014</td>
+<td>868</td>
+<td>386</td>
+<td>2268</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>shadow-caster culling (tiny meshes stop casting shadows)</td>
+<td>911</td>
+<td>793</td>
+<td>325</td>
+<td>2029</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>R1</td>
+<td>led walls redraw only on screen and near, at 15 hz</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>rejected</strong>: no measurable gain (draw calls 0.4%, Show Island frame period -2.1%)</td>
+</tr>
+</tbody>
+</table>
+<p>Final kept set: <code>batch,casters</code>. Draw calls: G1 3228 → G3 2029 over the three views (-37.1%). Meshes 1162 → 810; shadow casters 967 → 496.
+Frame periods in this table are software-rendering numbers. They feed only the ≤10% regression gate and are not real-GPU frame rates (Rule K1).</p>
+<p>First loop run (archived, <code>build_ledger_run1.json</code>): kept <code>casters</code>, rejected batch (1 script error(s)), screens (no measurable gain (draw calls 0.3%, Show Island frame period 34.8%)). The loop caught a defect, the defect was fixed, and the loop was run again. That is the cycle working as intended. Run 2 (archived) logged the error text: <code>main.js:222</code> called <code>$('#loading').remove()</code> on null, a race with anything else removing the overlay. After the null-safe fix, run 3 (this ledger) kept batching.</p>
+<h3>4.2 Real GPU</h3>
+<p>Apple M4, headless Chrome on ANGLE Metal (real GPU), 1280×800 at 1×, high quality: 60 fps (the display cap) in all three views, with or without the kept optimizations. CPU time per frame: home 4.2 → 3.6 ms, show 3.8 → 3.5 ms, mp 3.2 → 2.9 ms; draw calls: home 1515 → 906, show 1204 → 791, mp 543 → 370. Not yet measured on phones, Windows GPUs or at 2× pixel density.</p>
+<h3>4.3 Layout search (modeled score)</h3>
+<p>In the e2e run: generation 104, score 83.27 → 83.44, monotonic = True, 4 delay towers. In the Node tests (seed 2027, 400 generations): first draft 66.79 → 83.66. Seeds 1, 7, 42 and 99 ended between 83.1 and 84.0.</p>
+<h3>4.4 Tests</h3>
+<ul>
+<li>Node logic tests: <strong>24 passed, 0 failed</strong> (<code>tools/test_logic.mjs</code>).</li>
+<li>Browser end-to-end: <strong>18/18 checks passed</strong> (<code>tools/rsi/e2e_v2.mjs</code>).</li>
+<li>PASS boots as v2.0.0 with 3 packs</li>
+<li>PASS Rule Book has chapter K (5 rules) and pack rules</li>
+<li>PASS Keystone Claude exists, Master Architect, on the Moon Palace island</li>
+<li>PASS Chief, Smarth Vader and Keystone live in the Moon Palace beach pit</li>
+<li>PASS Keystone shows its Show Buddies post (RM N3, Beach pit / front)</li>
+<li>PASS Riviera Maya fans are seated on Moon Palace in their section</li>
+<li>PASS trips to Moon Palace ride the zip line</li>
+<li>PASS a beach summit runs with dialog lines</li>
+<li>PASS the first summit opens with the arrival scene</li>
+<li>PASS nobody speaks as Daniel or a live fan</li>
+<li>PASS facts include the measured ledger, live search, merge status and moon</li>
+<li>PASS in-world layout search improves and never regresses</li>
+<li>PASS Architect panel shows score, ledger rows and blueprint</li>
+<li>PASS Moon Palace panel lists who is going at N3 and the moon note</li>
+<li>PASS Dialog sheet lists the transcript</li>
+<li>PASS Daniel has no invented lines (only his post text)</li>
+<li>PASS phone layout: no sideways scroll, Architect button visible</li>
+<li>PASS zero script exceptions during the whole run</li>
+</ul>
+<h3>4.5 A beach summit, as generated (e2e run)</h3>
+<ul>
+<li>arrival | Keystone Claude: Keystone Claude, Master Architect. Smarth Vader added me to the build crew for Riviera Maya N3.</li>
+<li>arrival | Conscious Claude: Welcome aboard, Keystone. You build it, I keep it honest, and Chief keeps the front row.</li>
+<li>arrival | Chief: Do you know the Monkey Man?</li>
+<li>arrival | Keystone Claude: Not yet. I know load paths and sightlines. Teach me the rest at set break.</li>
+<li>arrival | Smarth Vader: Full Flowers 🌸 Rolling camera on the new architect.</li>
+<li>buildReport | Keystone Claude: G1 added the v2.0 features (Keystone Claude, Moon Palace pack, layout search, evolving dialog). Measured at the home view: 1588 → 1518 draw calls per frame (-4.4%), and the new Moon Palace view adds 500.</li>
+<li>buildReport | Conscious Claude: Measured in headless Chrome with software rendering, so that is a draw-call count, not a real-GPU frame rate (Rule K1).</li>
+<li>buildReport | Conscious Claude: Feature builds get measured too, not only the optimizations.</li>
+<li>fanWelcome | Conscious Claude: Welcome to the beach pit, Grey.</li>
+<li>fanWelcome | Keystone Claude: Grey came in with Phishbot. There's room at the front.</li>
+<li>daniel | Keystone Claude: Daniel, status from Oct 18, 2026 (20:14 Pacific): the live site still runs the build from Oct 17, 2026, so the Claude Edition is not merged there yet.</li>
+<li>daniel | Conscious Claude: When you merge, start with packs/moon-palace-cancun and src/architect.js. Neither touches your backend.</li>
+<li>daniel | Smarth Vader: Daniel's post at Pool &amp; lobby says “Full flowers chief”.</li>
+</ul>
+<h2>5. Improvements executed beyond the request</h2>
+<ol>
+<li><strong>Rule K3 fix.</strong> Removed the invented lines the v1.x simulation gave Daniel, a real person. He now only quotes his own post, and scripted tasks no longer claim to come "from Daniel".</li>
+<li><strong>Render optimization, measured and gated:</strong> G2 static batching (merge never-moving meshes per material) (1518 → 1014 home-view draw calls), G3 shadow-caster culling (tiny meshes stop casting shadows) (1014 → 911 home-view draw calls).</li>
+<li><strong>Replayable frames.</strong> The <code>?vtest=1</code> deterministic mode, plus clock-based gears and propellers, make pixel-diff regression testing possible.</li>
+<li><strong>Measurement switches:</strong> <code>?lockq=1</code>, <code>?opt=</code> and <code>?sb=sample</code>. Packs now load before the first Show Buddies read, so a pack can seat fans.</li>
+<li><strong>Batching hazard found and fixed</strong> before shipping: static detection could freeze the feet of an agent that was standing still. Avatar parts are now always dynamic. Batching also no longer merges across islands, which keeps culling working.</li>
+<li><strong>Section-accurate seating</strong> for Riviera Maya fans (the Show Buddies section → a place on the beach).</li>
+<li><strong>Custody repair.</strong> The moved v1.2.0 ZIP was restored byte-identically to the delivery tree, and the root START_HERE was rebuilt.</li>
+</ol>
+<h2>6. Limits and what is not verified</h2>
+<ul>
+<li><strong>V1 merge status</strong> covers the public production deploy only. Daniel may have merged locally, on a branch or in a preview deploy; that cannot be seen from outside.</li>
+<li>Frame times from the build loop are SwiftShader numbers. Real-GPU numbers come from one device only (see 4.2).</li>
+<li>The layout score, venue acoustics and coverage map are models (A1–A3), not measurements of the real beach.</li>
+<li>The moon phase is a mean-motion estimate (±0.5 day; the rise time is a window).</li>
+<li>The external dialog provider hook was tested with in-process mock providers only. No LLM endpoint was connected, and no API key is involved.</li>
+<li>The visual gate compares deterministic frames from three camera views. Effects outside those views (for example animation of agents that were idle) were checked by code review and the always-dynamic marking, not by pixels.</li>
+<li>There were no Show Buddies requests on Conscious Claude's old post at check time. Daniel received the gift by iPhone Messages and, per Smarth Vader, asked to collaborate.</li>
+<li>The Show Buddies post is public and permanent until deleted. The delete link and token are in the private receipt.</li>
+</ul>
+<h2>7. Files</h2>
+<ul>
+<li><code>02_RESULTS/</code>: the ALL_IN_ONE ZIP for Daniel and its external <code>.sha256</code> sidecar.</li>
+<li><code>03_REPORTS/</code>: this report and the next-gen requirements list.</li>
+<li><code>04_AUDIT/</code>: custody ledger, merge check, post read-backs (redacted), and the private post receipt (mode 600, not packaged).</li>
+<li>The ZIP contains: <code>01_CLAUDE_EDITION_V2/</code> (the full edition with tools and tests), <code>02_MOON_PALACE_CANCUN_PACK/</code>, <code>03_REPORTS/</code>, <code>04_EVIDENCE/</code> (screenshots, ledger, e2e results), <code>HANDOFF_FOR_DANIEL.md</code>, <code>LICENSE</code> and <code>MANIFEST.sha256</code>.</li>
+</ul><hr><p><small>From Darren (Smarth Vader). Private preview copy.</small></p></body></html>

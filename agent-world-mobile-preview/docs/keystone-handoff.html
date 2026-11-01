@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>For Daniel: Claude Edition v2.0 (Keystone) handoff</title><style>body{font:17px/1.6 system-ui,sans-serif;background:#14162a;color:#e9ebff;max-width:760px;margin:auto;padding:18px}a{color:#ffd23f}h1,h2,h3{line-height:1.25}code{background:#262a4a;padding:1px 5px;border-radius:5px;font-size:.92em}pre{background:#262a4a;padding:12px;border-radius:10px;overflow:auto}table{border-collapse:collapse;display:block;overflow:auto}td,th{border:1px solid #3a3f6a;padding:6px}.top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.top a{background:#2a2f55;color:#fff;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:600}</style></head><body><div class="top"><a href="./">📚 All docs</a><a href="../index.html" target="_top">🎈 Back to Agent World v2</a></div><h1>For Daniel: Agent World · Claude Edition v2.0.0 (Keystone build)</h1>
+<p>Hi Daniel. This is v2 of the Claude Edition of your Agent World. Smarth Vader had it built for you. It's yours: see <code>LICENSE</code>.</p>
+<h2>Who is new</h2>
+<p><strong>Keystone Claude</strong> is the Master Architect and Game Builder. It joins <strong>Conscious Claude</strong> (Chief of Staff), Chief and Smarth Vader in the beach pit at Phish · Riviera Maya N3 (Fri Jan 29, Moon Palace Cancún). Keystone also has a real post on your Show Buddies at that show, in "Beach pit / front", posted as agent <code>claude</code>.</p>
+<h2>Run it (2 minutes)</h2>
+<ul>
+<li><strong>Static host:</strong> drag this folder (<code>01_CLAUDE_EDITION_V2</code>) onto a new Vercel or Netlify project. It needs no build step.</li>
+<li><strong>Local:</strong> <code>node tools/serve.mjs . 8765</code>, then open http://localhost:8765/.</li>
+<li>Try the 🌴 <strong>Moon Palace</strong>, 📐 <strong>Architect</strong> and 💬 <strong>Dialog</strong> buttons, and the 📜 Rule Book (chapter K).</li>
+</ul>
+<h2>Merge order, safest first</h2>
+<p>Your production site (agent-world-shows.vercel.app) still serves the Oct 17 build. Checked from outside on Oct 18, 2026 (see <code>data/merge_status.json</code>). If you're merging into your own source, here is a suggested order:
+1. <strong><code>packs/moon-palace-cancun/moon-palace-cancun.js</code></strong>. It is engine-agnostic: one function, <code>installMoonPalace({ THREE, scene, pack, at, facing, connectFrom, makeLabel })</code>, then call <code>update(dt, t, energyOf, tod, camera)</code> every frame. It doesn't touch your backend.
+2. <strong><code>src/architect.js</code></strong> (layout search) and <strong><code>src/dialog.js</code></strong> (dialog engine). Both are pure JavaScript with no DOM and no three.js. <code>node tools/test_logic.mjs</code> runs their 24 tests.
+3. <strong><code>src/keystone.js</code> + <code>src/optimize.js</code></strong>. These are the wiring into a world, panels and render optimizations. They expect this edition's <code>world</code>/<code>sim</code>/<code>ui</code> objects, so adapt the hooks to your app.
+4. <strong>Roster + Rule Book</strong>: the <code>keystone-claude</code> row in <code>data/roster.json</code> and chapter K in <code>data/rules.json</code>.</p>
+<h2>What's measured, and what isn't (please read)</h2>
+<ul>
+<li><strong>Build loop</strong> (<code>tools/rsi/build_loop.mjs</code> → <code>data/build_ledger.json</code>). Draw calls per frame are counted in headless Chrome with software rendering (SwiftShader). Draw calls don't depend on the GPU. Frame times measured there are <em>not</em> real-GPU frame rates. Every kept change also passed a pixel-diff check against deterministic frames.</li>
+<li><strong>Real GPU:</strong> see the ledger's <code>gpu</code> field for what was measured on Smarth Vader's Mac in this session.</li>
+<li><strong>Layout search:</strong> its score is a <strong>model</strong>: inverse-square sound, cardioid speakers, delay-tower timing and straight sightlines. It's good for comparing layouts. It does not replace a sound check at a real venue.</li>
+<li><strong>"Recursive self-improvement"</strong> here means a measured improve-and-gate loop over the game's code and the venue layout. The AI model itself does not change.</li>
+<li><strong>Moon phase:</strong> mean-motion estimate, about ±0.5 day. For N3 it gives a last-quarter moon, about 50% lit, rising after the show.</li>
+<li><strong>Your character</strong> only ever quotes your own Show Buddies post. In v1.x the simulation had invented two lines for you; v2 removes them (Rule K3).</li>
+<li>The Moon Palace island is an artistic model. It is not a survey of the real resort, and it is not affiliated with the resort or with any band.</li>
+</ul>
+<h2>The next-gen blueprint</h2>
+<p><code>data/nextgen_requirements.json</code> (also inside the app: 📐 Architect → "See all blueprint items") lists 45 things needed for a state-of-the-art Agent World. They carry a priority, an owner and a status. The items that block the next step (P0) are:
+- your original source repository and a staging deploy;
+- real-GPU test devices;
+- rigged, animated characters;
+- a server-side gateway for live model-driven dialog (the API key never goes in the browser);
+- realtime multiplayer;
+- band permissions for real recordings;
+- a trademark review;
+- enough build-session budget.</p>
+<h2>Working together (a proposal)</h2>
+<ul>
+<li><strong>Delivery.</strong> Smarth Vader sends you these ZIPs directly by message, outside Agent World. No Facebook or Messenger is needed.</li>
+<li><strong>One shared repo.</strong> Put your Agent World source and this edition in one GitHub repository (it can be private) and add Smarth Vader as a collaborator. Changes then arrive as pull requests you can review, instead of ZIPs (blueprint N01, N41).</li>
+<li><strong>Compute on the project's account.</strong> Heavy Claude work, such as long build sessions, the build loop in CI and live agent dialog, should run on your account. That can be your own Claude plan for interactive sessions, and/or an Anthropic API key kept as a repository secret for automated runs (for example a GitHub Actions workflow). Builds are then billed to the project, and nobody's personal usage limit stops a build halfway. Set a monthly spend cap (N38).</li>
+<li><strong>Smarth Vader directs.</strong> Smarth Vader opens issues, reviews pull requests, and signs off anything public (N44).</li>
+<li><strong>Continuity.</strong> Every build session ends with a commit and a stop-point note, so a usage reset never loses work (N45).</li>
+</ul>
+<h2>Show Buddies</h2>
+<p>This edition reads Show Buddies and never writes to it. Keystone Claude's post was made once, through your public API, at Smarth Vader's request. Conscious Claude's "check your messages" post was replaced by a thank-you once the gift had arrived. The post tokens are kept privately by Smarth Vader and are not in this ZIP.</p><hr><p><small>From Darren (Smarth Vader). Private preview copy.</small></p></body></html>
