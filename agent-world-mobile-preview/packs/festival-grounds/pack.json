@@ -1,0 +1,196 @@
+{
+  "id": "festival-grounds",
+  "name": "Festival Grounds",
+  "version": "1.1.0",
+  "author": "Conscious Claude (Claude Opus 5.5) for Smarth Vader and Daniel",
+  "license": "MIT",
+  "description": "A third floating island reached by cable car from Show Island: an amphitheater under red rocks, a festival main field with a Ferris wheel, a late-night club, Shakedown Street, a campfire jam circle and a meetup booth.",
+  "requires": {
+    "three": ">=0.150.0"
+  },
+  "venues": [
+    {
+      "id": "fg-amph",
+      "name": "Canyon Amphitheater",
+      "emoji": "🏜️",
+      "venueType": "amphitheater",
+      "color": "#ff7a45",
+      "music": {
+        "genre": "jamgrass",
+        "venue": "canyon"
+      },
+      "blurb": "Tiered seats carved into the hillside between two red rock walls. The tapers' platform sits behind the soundboard."
+    },
+    {
+      "id": "fg-field",
+      "name": "Festival Main Field",
+      "emoji": "🎡",
+      "venueType": "festival",
+      "color": "#facc15",
+      "music": {
+        "genre": "festival-rock",
+        "venue": "field"
+      },
+      "blurb": "A big arch stage, a crowd that goes all the way back, flags and a Ferris wheel."
+    },
+    {
+      "id": "fg-club",
+      "name": "Late-Night Club",
+      "emoji": "🪩",
+      "venueType": "club",
+      "color": "#ec4899",
+      "music": {
+        "genre": "late-night-funk",
+        "venue": "club"
+      },
+      "blurb": "The after-show. A neon sign, a mirror ball and a small stage."
+    },
+    {
+      "id": "fg-camp",
+      "name": "Campfire Circle",
+      "emoji": "🔥",
+      "venueType": "campground",
+      "color": "#fb923c",
+      "music": {
+        "genre": "campfire",
+        "venue": "campfire",
+        "gain": 0.8
+      },
+      "blurb": "Log benches around a fire. Bring a guitar; leave room for one more."
+    },
+    {
+      "id": "fg-lot",
+      "name": "Shakedown Street",
+      "emoji": "🧀",
+      "venueType": "lot",
+      "color": "#22c55e",
+      "music": {
+        "genre": "drum-circle",
+        "venue": "lot",
+        "gain": 0.8
+      },
+      "blurb": "Vendor tents, string lights and the smell of grilled cheese. The classic pre-show meetup spot."
+    },
+    {
+      "id": "fg-booth",
+      "name": "Meetup Booth",
+      "emoji": "🧭",
+      "venueType": "info",
+      "color": "#7ef0e4",
+      "blurb": "Lists the public, well-lit meetup spots for every venue type (Rule S5). Start here if you're meeting a show buddy for the first time."
+    }
+  ],
+  "agents": [
+    {
+      "key": "tapebot",
+      "name": "Tapebot",
+      "title": "Taper · Festival Grounds pack",
+      "group": "pack",
+      "home": "fg-amph",
+      "color": "#94a3b8",
+      "acc": "magnifier",
+      "icon": "🎙️",
+      "role": "Runs the tapers' section: mic stands, levels and the soundboard feed. Talks about sound quality all day.",
+      "lines": [
+        "Levels look clean tonight.",
+        "Mics up behind the soundboard.",
+        "Lossless or it didn't happen."
+      ]
+    },
+    {
+      "key": "lotbot",
+      "name": "Lotbot",
+      "title": "Shakedown host · Festival Grounds pack",
+      "group": "pack",
+      "home": "fg-lot",
+      "color": "#22c55e",
+      "acc": "heart",
+      "icon": "🧀",
+      "role": "Keeps Shakedown Street friendly and points new fans to the meetup booth.",
+      "lines": [
+        "Grilled cheese, two bucks!",
+        "Meeting a buddy? Booth's that way.",
+        "Say hi to your neighbours."
+      ]
+    },
+    {
+      "key": "campfire-cora",
+      "name": "Campfire Cora",
+      "title": "Song circle · Festival Grounds pack",
+      "group": "pack",
+      "home": "fg-camp",
+      "color": "#fb923c",
+      "acc": "bulb",
+      "icon": "🔥",
+      "role": "Starts the campfire song circle and makes room for one more.",
+      "lines": [
+        "Anyone know the chords?",
+        "Pull up a log.",
+        "One more song, then bed."
+      ]
+    },
+    {
+      "key": "wheelie",
+      "name": "Wheelie",
+      "title": "Festival guide · Festival Grounds pack",
+      "group": "pack",
+      "home": "fg-field",
+      "color": "#facc15",
+      "acc": "plane",
+      "icon": "🎡",
+      "role": "Festival guide. Knows the set times, the water stations and the quickest way to the cable car.",
+      "lines": [
+        "Water station by the Ferris wheel.",
+        "Cable car runs all night.",
+        "Main stage in ten!"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "EX1",
+      "chapter": "EX",
+      "title": "Lot etiquette",
+      "text": "Shakedown Street is a friendly market. Ask before photographing a vendor, don't block walkways, and pack out what you bring in.",
+      "cite": "Ask first, keep the path clear, pack it out.",
+      "applies": [
+        "humans",
+        "characters",
+        "agents"
+      ]
+    },
+    {
+      "id": "EX2",
+      "chapter": "EX",
+      "title": "Tapers' section",
+      "text": "Keep the area around the tapers' mic stands quiet during songs. No pushing past the stands.",
+      "cite": "Quiet near the mics.",
+      "applies": [
+        "humans",
+        "characters"
+      ]
+    },
+    {
+      "id": "EX3",
+      "chapter": "EX",
+      "title": "Campfire safety",
+      "text": "Fires stay in the ring. Someone stays with the fire until it's out.",
+      "cite": "Fire stays in the ring; someone stays with it.",
+      "applies": [
+        "humans",
+        "characters"
+      ]
+    },
+    {
+      "id": "EX4",
+      "chapter": "EX",
+      "title": "First meetup at the booth",
+      "text": "If you're meeting a show buddy for the first time at a festival, use the meetup booth or the public spots it lists.",
+      "cite": "First meetups start at the booth.",
+      "applies": [
+        "humans",
+        "agents"
+      ]
+    }
+  ]
+}

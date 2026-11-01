@@ -1,0 +1,44 @@
+{
+  "_note": "Festival Grounds pack: merge into shows.json (same schema as Daniel's). venueTypes adds 4 new types. NO show dates are included on purpose: add only dates confirmed on each band's official tour page. Band source links point to official homepages; check them before publishing.",
+  "venueTypes": {
+    "amphitheater": {
+      "sections": ["Pit / GA floor", "Lower reserved", "Upper rows", "Lawn / back", "Tapers' section"],
+      "spots": [
+        {"id": "pre", "when": "Pre-show", "where": "Main gate, outside security (public, staffed)", "time": "60 min before doors"},
+        {"id": "setbreak", "when": "Setbreak", "where": "Behind the soundboard, by the tapers' section", "time": "Right when set 1 ends"},
+        {"id": "post", "when": "Post-show", "where": "Main gate, under the lights", "time": "10 min after the encore"}
+      ]
+    },
+    "festival": {
+      "sections": ["Main stage front", "Main stage middle", "Side stage", "Campgrounds", "Late-night tent"],
+      "spots": [
+        {"id": "pre", "when": "Pre-show", "where": "The festival info / meetup booth (public, staffed)", "time": "Before the first act you both want"},
+        {"id": "setbreak", "when": "Between sets", "where": "Main water station", "time": "At the changeover"},
+        {"id": "post", "when": "After the headliner", "where": "Info / meetup booth", "time": "15 min after the last song"}
+      ]
+    },
+    "club": {
+      "sections": ["Floor", "Bar", "Balcony", "Outside"],
+      "spots": [
+        {"id": "pre", "when": "Pre-show", "where": "Out front by the box office", "time": "30 min before doors"},
+        {"id": "setbreak", "when": "Setbreak", "where": "By the bar, away from the speakers", "time": "Right when set 1 ends"},
+        {"id": "post", "when": "Post-show", "where": "Out front by the box office", "time": "10 min after the encore"}
+      ]
+    },
+    "campground": {
+      "sections": ["Campsite", "Song circle", "Showers / facilities", "Shuttle stop"],
+      "spots": [
+        {"id": "pre", "when": "Daytime", "where": "Campground check-in or general store", "time": "Afternoon"},
+        {"id": "setbreak", "when": "Evening", "where": "Shuttle stop to the venue", "time": "Before the first set"},
+        {"id": "post", "when": "Late", "where": "Lit common area near check-in", "time": "After the show"}
+      ]
+    }
+  },
+  "bands": [
+    {"id": "billystrings", "name": "Billy Strings", "emoji": "🪕", "source": "https://www.billystrings.com"},
+    {"id": "umphreys", "name": "Umphrey's McGee", "emoji": "🎸", "source": "https://umphreys.com"},
+    {"id": "sci", "name": "The String Cheese Incident", "emoji": "🧀", "source": "https://www.stringcheeseincident.com"},
+    {"id": "moe", "name": "moe.", "emoji": "🐄", "source": "https://moe.org"}
+  ],
+  "shows": []
+}
