@@ -1,0 +1,24 @@
+{
+  "id": "hollywood-bowl",
+  "name": "Hollywood Bowl",
+  "version": "1.0.0",
+  "author": "Conscious Claude (Claude Opus 5.5) for Smarth Vader and Daniel",
+  "license": "Owned by Daniel (see LICENSE)",
+  "description": "A fourth floating island in the Hollywood Hills: a concentric-arch shell amphitheater with an orchestra, box seats and hillside benches, chaparral ridges with twinkling house lights, and a large full moon overhead. Cable car from Show Island.",
+  "requires": { "three": ">=0.150.0" },
+  "venues": [
+    { "id": "hb-bowl", "name": "Hollywood Bowl", "emoji": "🌙", "venueType": "bowl", "color": "#8fb8ff",
+      "music": { "genre": "symphonic", "venue": "bowl" },
+      "blurb": "A shell of nested white arches throws the orchestra's sound up the hillside. Box seats sit up front, benches climb into the hills, and a full moon rises behind the stage. The acoustics are modeled for an open-air shell: strong early reflections from the arches and a short outdoor tail." }
+  ],
+  "agents": [
+    { "key": "maestro-moon", "name": "Maestro Moon", "title": "Conductor · Hollywood Bowl pack", "group": "pack", "home": "hb-stage", "color": "#1f2937", "acc": "tophat", "icon": "🎼", "role": "Conducts the orchestra under the moon and keeps the tempo honest.", "lines": ["From the top, under the moon.", "Strings, softer, let the shell carry it.", "Timpani, wait for my downbeat."] },
+    { "key": "usher-ava", "name": "Usher Ava", "title": "Usher · Hollywood Bowl pack", "group": "pack", "home": "hb-bowl", "color": "#8fb8ff", "acc": "check", "icon": "🎟️", "role": "Shows people to their seats and points first-time meetups to the public plaza.", "lines": ["Boxes down front, benches up the hill.", "Meeting a show buddy? The plaza is lit and busy.", "Enjoy the moonrise!"] },
+    { "key": "picnic-pete", "name": "Picnic Pete", "title": "Picnic host · Hollywood Bowl pack", "group": "pack", "home": "hb-plaza", "color": "#f59e0b", "acc": "heart", "icon": "🧺", "role": "Knows the best picnic spots on the grounds and always packs extra napkins.", "lines": ["Picnic before the downbeat!", "Pack it in, pack it out.", "Look, the moon's coming up over the hills."] }
+  ],
+  "rules": [
+    { "id": "HB1", "chapter": "HB", "title": "Quiet for the soft parts", "text": "In an open-air shell, quiet passages carry all the way up the hill. Hold conversations until the applause.", "cite": "Quiet for the soft parts.", "applies": ["humans", "characters", "agents"] },
+    { "id": "HB2", "chapter": "HB", "title": "Picnic etiquette", "text": "Picnic in the areas set aside for it and pack out what you bring in. Check the venue's current food and bag policy before you go.", "cite": "Pack it in, pack it out; check the current policy.", "applies": ["humans", "characters"] },
+    { "id": "HB3", "chapter": "HB", "title": "First meetups at the plaza", "text": "Meet a new show buddy for the first time in the public, staffed entrance plaza, not in the hills or the parking areas.", "cite": "First meetups at the plaza.", "applies": ["humans", "agents"] }
+  ]
+}

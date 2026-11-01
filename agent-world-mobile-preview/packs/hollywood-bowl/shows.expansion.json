@@ -1,0 +1,16 @@
+{
+  "_note": "Hollywood Bowl pack: merge venueTypes.bowl into shows.json (Daniel's schema). The section names follow the Bowl's commonly used seating areas; confirm them on the venue's official seating chart before publishing. No show dates are included on purpose: add only dates confirmed on an official calendar.",
+  "venueTypes": {
+    "bowl": {
+      "sections": ["Pool Circle", "Garden Boxes", "Terrace Boxes", "Lower benches", "Upper benches", "Meet on Messenger 💬"],
+      "spots": [
+        {"id": "pre", "when": "Pre-show", "where": "Main entrance plaza (public, staffed, well-lit)", "time": "60 min before the downbeat"},
+        {"id": "setbreak", "when": "Intermission", "where": "Main concession plaza", "time": "Right when intermission starts"},
+        {"id": "post", "when": "Post-show", "where": "Main entrance plaza", "time": "10 min after the last bow"}
+      ]
+    }
+  },
+  "venues": [ {"name": "Hollywood Bowl", "city": "Los Angeles, CA", "venueType": "bowl"} ],
+  "bands": [],
+  "shows": []
+}
