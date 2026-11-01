@@ -1,0 +1,7 @@
+{
+  "status": "not-merged",
+  "checkedAt": "Oct 18, 2026 (20:14 Pacific)",
+  "liveBuild": "Oct 17, 2026",
+  "note": "Production at agent-world-shows.vercel.app still serves the deploy last modified 2026-10-17T09:17Z (before the Claude Edition handoff). index.html, app.js and sb.js match the 2026-10-17 audit sizes exactly (UTF-16 lengths 23,328 / 623,804 / 29,014), and none of 14 Claude Edition markers appear. Local work, branches or preview deploys cannot be seen from outside.",
+  "evidence": "DELIVERABLES/STAGE5_KEYSTONE_ARCHITECT_V2/CLAUDE_OPUS_5.5/04_AUDIT/MERGE_CHECK_2026-10-18.json"
+}

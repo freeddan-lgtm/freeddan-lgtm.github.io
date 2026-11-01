@@ -1,0 +1,459 @@
+{
+ "title": "Next-gen Agent World · Claude Edition — what Claude needs",
+ "version": "1.0",
+ "date": "2026-10-18",
+ "author": "Keystone Claude (Claude Opus 5.5)",
+ "summary": "Everything needed to take Agent World from a well-built browser world (v2.0) to a state-of-the-art live agent game world. P0 items block the next step; P1 items are needed for a competitive build; P2 items are polish. Status is as of 2026-10-18. Updated 2026-10-18 with the collaboration proposal: Daniel funds compute, Smarth Vader directs.",
+ "items": [
+  {
+   "id": "N01",
+   "area": "Access & source",
+   "priority": "P0",
+   "need": "Daniel's original Agent World source repository (unminified, with its build scripts).",
+   "why": "Today Claude only sees the 624 KB minified production bundle, so v1 and v2 are rebuilds. A real merge needs the real source.",
+   "whyShort": "Without the real source, every edition is a rebuild, not a merge.",
+   "owner": "Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N02",
+   "area": "Access & source",
+   "priority": "P0",
+   "need": "A staging deploy (a Vercel preview project or branch deploys) that Claude can target.",
+   "why": "Merges can be tested end to end without touching the live site fans use.",
+   "whyShort": "Staging lets us test merges without touching the live site.",
+   "owner": "Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N03",
+   "area": "Access & source",
+   "priority": "P1",
+   "need": "Show Buddies backend source or schema, plus a sandbox instance.",
+   "why": "Needed to add agent display names and avatars, and to test the write path without posting to the live database.",
+   "whyShort": "A sandbox backend means no test posts on the live database.",
+   "owner": "Daniel",
+   "status": "missing (only the public read API is known)"
+  },
+  {
+   "id": "N04",
+   "area": "Access & source",
+   "priority": "P1",
+   "need": "An agreed merge order for the v2 modules.",
+   "why": "The standalone pieces (packs/moon-palace-cancun, src/architect.js, src/dialog.js) can be merged first with the lowest risk.",
+   "whyShort": "Merge the standalone modules first; they are lowest risk.",
+   "owner": "Daniel + Keystone Claude",
+   "status": "proposed in HANDOFF_FOR_DANIEL.md"
+  },
+  {
+   "id": "N05",
+   "area": "Testing & measurement",
+   "priority": "P0",
+   "need": "Real-GPU test devices with automated frame-time capture: an Apple-silicon Mac, a Windows PC with an NVIDIA or AMD GPU, a mid-range Android phone and a recent iPhone.",
+   "why": "Every frame time in the build loop is SwiftShader software rendering. State of the art means 60 fps on the hardware fans actually use.",
+   "whyShort": "The build loop needs real GPUs, not just software rendering.",
+   "owner": "Smarth Vader / Daniel (hardware) + Claude (scripts) · funded by Daniel",
+   "status": "partial: one device (the Mac running this session), see the ledger"
+  },
+  {
+   "id": "N06",
+   "area": "Testing & measurement",
+   "priority": "P1",
+   "need": "CI that runs the Keystone build loop on every change and blocks regressions (GitHub Actions plus a GPU runner).",
+   "why": "Turns the measured improve-and-gate loop into a continuous, auditable process instead of a one-off run.",
+   "whyShort": "CI makes the build loop run on every change.",
+   "owner": "Daniel (repo) + Claude · funded by Daniel",
+   "status": "tool exists locally: tools/rsi/build_loop.mjs"
+  },
+  {
+   "id": "N07",
+   "area": "Testing & measurement",
+   "priority": "P1",
+   "need": "Consent-based real-user telemetry: frame-time percentiles, load time, errors.",
+   "why": "Lab numbers are not what fans see on their phones.",
+   "whyShort": "Lab numbers are not what fans see on their phones.",
+   "owner": "Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N08",
+   "area": "Testing & measurement",
+   "priority": "P2",
+   "need": "Playtests with 5–8 real fans, with notes on what was confusing or fun.",
+   "why": "Measurements prove smoothness, not fun.",
+   "whyShort": "Measurements prove smoothness, not fun.",
+   "owner": "Smarth Vader / Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N09",
+   "area": "Rendering & performance",
+   "priority": "P1",
+   "need": "A WebGPU renderer path (three.js WebGPURenderer with TSL shaders) with a WebGL2 fallback.",
+   "why": "Compute shaders for crowds, water and particles; less CPU overhead per draw call.",
+   "whyShort": "WebGPU unlocks compute for crowds and water.",
+   "owner": "Claude",
+   "status": "not started"
+  },
+  {
+   "id": "N10",
+   "area": "Rendering & performance",
+   "priority": "P1",
+   "need": "An asset pipeline: glTF 2.0 with meshopt or Draco geometry, KTX2 (Basis) textures, and levels of detail.",
+   "why": "Real venue and character models without huge downloads.",
+   "whyShort": "A glTF/KTX2 pipeline brings real models without huge downloads.",
+   "owner": "Claude + a 3D artist",
+   "status": "missing (all geometry is procedural)"
+  },
+  {
+   "id": "N11",
+   "area": "Rendering & performance",
+   "priority": "P2",
+   "need": "Post-processing upgrades: temporal anti-aliasing, ambient occlusion, light shafts, a physically based sky and an FFT ocean.",
+   "why": "The cinematic look of current games.",
+   "whyShort": "Better post-processing gives the cinematic look.",
+   "owner": "Claude",
+   "status": "partial (bloom only)"
+  },
+  {
+   "id": "N12",
+   "area": "Rendering & performance",
+   "priority": "P1",
+   "need": "Performance budgets the loop enforces, for example ≤500 draw calls, ≤16.7 ms GPU time on target hardware, ≤5 MB first download.",
+   "why": "Budgets make \"faster\" a pass/fail test instead of an opinion.",
+   "whyShort": "Budgets turn performance into a pass/fail test.",
+   "owner": "Keystone Claude",
+   "status": "draw calls tracked; budgets not set yet"
+  },
+  {
+   "id": "N13",
+   "area": "Characters & animation",
+   "priority": "P0",
+   "need": "Rigged, animated 3D characters (licensed or commissioned) for agents and fans: walk, dance and gesture clips with blending.",
+   "why": "Capsule avatars are the biggest visual gap to a state-of-the-art world.",
+   "whyShort": "Real animated characters are the biggest visual upgrade left.",
+   "owner": "Daniel (budget, licences) + a character artist",
+   "status": "missing"
+  },
+  {
+   "id": "N14",
+   "area": "Characters & animation",
+   "priority": "P2",
+   "need": "Facial animation and lip-sync for spoken dialog.",
+   "why": "Agents that talk should look like they are talking.",
+   "whyShort": "Talking agents need faces that move.",
+   "owner": "Claude + a text-to-speech service",
+   "status": "missing"
+  },
+  {
+   "id": "N15",
+   "area": "Characters & animation",
+   "priority": "P2",
+   "need": "GPU crowd simulation: instanced skinned crowds moving with flow fields.",
+   "why": "Big shows need big, believable crowds.",
+   "whyShort": "Big shows need believable crowds.",
+   "owner": "Claude",
+   "status": "instanced capsules only"
+  },
+  {
+   "id": "N16",
+   "area": "Agents & AI",
+   "priority": "P0",
+   "need": "A server-side gateway for live agent dialog (the Claude API from a backend; the API key never in the browser) with per-session rate limits, a monthly spend cap, prompt caching, and the v2 validator (cast check, no invented quotes, numbers grounded in facts).",
+   "why": "Template dialog evolves with the facts; a model behind a gateway makes conversations open-ended without losing the honesty rules.",
+   "whyShort": "A server gateway makes dialog open-ended without losing the honesty rules.",
+   "owner": "Daniel (account, billing, hosting) + Claude (code) · funded by Daniel",
+   "status": "hook and validator built (AW_CONFIG.dialogProvider); gateway missing"
+  },
+  {
+   "id": "N17",
+   "area": "Agents & AI",
+   "priority": "P1",
+   "need": "A per-agent memory store on the server (summaries plus retrieval) with a visible reset.",
+   "why": "Agents should remember fans and past shows across devices.",
+   "whyShort": "Agents should remember fans and shows across devices.",
+   "owner": "Claude + Daniel (hosting)",
+   "status": "browser-local memory only"
+  },
+  {
+   "id": "N18",
+   "area": "Agents & AI",
+   "priority": "P1",
+   "need": "Tool-use actions for agents (go to, build, draft a post) where any write waits for human approval.",
+   "why": "Agents that act, safely.",
+   "whyShort": "Agents should act, and every write waits for a human.",
+   "owner": "Claude",
+   "status": "bridge message format only"
+  },
+  {
+   "id": "N19",
+   "area": "Agents & AI",
+   "priority": "P1",
+   "need": "The live agent bridge, implemented and tested: an authenticated WebSocket server relaying real agent events.",
+   "why": "Replaces the labelled simulation with real activity.",
+   "whyShort": "The bridge turns the simulation into real activity.",
+   "owner": "Daniel (hosting) + Claude",
+   "status": "client stub, never tested against a server"
+  },
+  {
+   "id": "N20",
+   "area": "Agents & AI",
+   "priority": "P1",
+   "need": "Moderation for any user-generated text (filters, report and block) and server-side enforcement of the no-impersonation rule (K3).",
+   "why": "Open chat needs protection; real people must never get invented words.",
+   "whyShort": "Open chat needs moderation, and K3 enforced on the server.",
+   "owner": "Daniel + Claude",
+   "status": "client-side validator only"
+  },
+  {
+   "id": "N21",
+   "area": "Agents & AI",
+   "priority": "P2",
+   "need": "An evaluation suite for agent behaviour: scripted scenes, factuality checks, refusal checks.",
+   "why": "Measures whether agents stay honest and useful as they get smarter.",
+   "whyShort": "An eval suite keeps agents honest as they get smarter.",
+   "owner": "Claude",
+   "status": "partial (dialog grounding tests)"
+  },
+  {
+   "id": "N22",
+   "area": "Multiplayer & backend",
+   "priority": "P0",
+   "need": "A realtime multiplayer server (authoritative rooms, for example Colyseus, PartyKit or Cloudflare Durable Objects) with presence and reconnection.",
+   "why": "An Agent World where many fans and agents share one live space.",
+   "whyShort": "Realtime rooms let many fans share one live world.",
+   "owner": "Daniel (hosting) + Claude · funded by Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N23",
+   "area": "Multiplayer & backend",
+   "priority": "P2",
+   "need": "Spatial voice chat (WebRTC) with mute and block.",
+   "why": "Talking to the person next to you at the show.",
+   "whyShort": "Voice chat for the person next to you at the show.",
+   "owner": "Daniel + Claude",
+   "status": "missing"
+  },
+  {
+   "id": "N24",
+   "area": "Multiplayer & backend",
+   "priority": "P1",
+   "need": "Optional accounts or anonymous identities with privacy-safe profiles, keeping Show Buddies' rule that Facebook links stay private until both agree.",
+   "why": "Identity enables memory and moderation without breaking the privacy rule.",
+   "whyShort": "Identity enables memory without breaking the privacy rule.",
+   "owner": "Daniel",
+   "status": "no-sign-in only"
+  },
+  {
+   "id": "N25",
+   "area": "Multiplayer & backend",
+   "priority": "P2",
+   "need": "Persistent world state in a database (layouts, builds, XP).",
+   "why": "Progress should not live only in one browser.",
+   "whyShort": "Progress should not live in one browser only.",
+   "owner": "Daniel + Claude",
+   "status": "localStorage only"
+  },
+  {
+   "id": "N26",
+   "area": "Simulation & world-building",
+   "priority": "P1",
+   "need": "Navigation meshes (recast-navigation) and a physics engine (Rapier) instead of hand-coded detours.",
+   "why": "Agents that walk around anything, on any island.",
+   "whyShort": "Navmeshes let agents walk around anything.",
+   "owner": "Claude",
+   "status": "obstacle-detour routing"
+  },
+  {
+   "id": "N27",
+   "area": "Simulation & world-building",
+   "priority": "P2",
+   "need": "A procedural venue generator: extend the layout search from 5 variables (towers and desk) to whole venues (stages, sections, paths), with human approval of every layout.",
+   "why": "Lets Keystone design new venues, not just tune one.",
+   "whyShort": "Next, Keystone should design whole venues, not just tune one.",
+   "owner": "Claude",
+   "status": "layout search on one venue"
+  },
+  {
+   "id": "N28",
+   "area": "Simulation & world-building",
+   "priority": "P2",
+   "need": "Accurate sky for real show dates and places (sun and moon ephemeris).",
+   "why": "The moon over the show should be the real one.",
+   "whyShort": "The moon over the show should be the real one.",
+   "owner": "Claude",
+   "status": "mean-motion moon phase only (about ±0.5 day)"
+  },
+  {
+   "id": "N29",
+   "area": "Audio",
+   "priority": "P0",
+   "need": "Written permission from bands for real recordings, or a licensing deal.",
+   "why": "The most-wanted realism, and it cannot ship without rights.",
+   "whyShort": "Real recordings cannot ship without written permission.",
+   "owner": "Smarth Vader / Daniel",
+   "status": "permission guide written; no permissions yet"
+  },
+  {
+   "id": "N30",
+   "area": "Audio",
+   "priority": "P2",
+   "need": "Measured or licensed impulse responses for real venues; HRTF spatial audio in an AudioWorklet.",
+   "why": "Venue sound that is measured, not modeled.",
+   "whyShort": "Venue sound should be measured, not modeled.",
+   "owner": "Claude",
+   "status": "modeled acoustics"
+  },
+  {
+   "id": "N31",
+   "area": "Audio",
+   "priority": "P1",
+   "need": "Blind A/B listening tests on real headphones and speakers.",
+   "why": "Ears, not plots, decide the mix.",
+   "whyShort": "Ears, not plots, decide the mix.",
+   "owner": "Smarth Vader + listeners",
+   "status": "one informal approval (v1.2.0)"
+  },
+  {
+   "id": "N32",
+   "area": "UX & accessibility",
+   "priority": "P1",
+   "need": "A full WCAG 2.2 AA audit: contrast, focus order, captions for all dialog, a screen-reader route through the world.",
+   "why": "Everyone should be able to use it.",
+   "whyShort": "Everyone should be able to use it.",
+   "owner": "Claude + an accessibility reviewer",
+   "status": "partial (list view, live regions, reduced motion)"
+  },
+  {
+   "id": "N33",
+   "area": "UX & accessibility",
+   "priority": "P1",
+   "need": "Touch and gamepad controls, a first-person walk mode and a short onboarding.",
+   "why": "Games feel like games when you can walk around.",
+   "whyShort": "Walk mode and onboarding make it feel like a game.",
+   "owner": "Claude",
+   "status": "orbit camera only"
+  },
+  {
+   "id": "N34",
+   "area": "UX & accessibility",
+   "priority": "P2",
+   "need": "Localization, starting with English and Spanish for the Riviera Maya run.",
+   "why": "Half the beach speaks Spanish.",
+   "whyShort": "Riviera Maya deserves Spanish.",
+   "owner": "Claude + a translator",
+   "status": "English only"
+  },
+  {
+   "id": "N35",
+   "area": "Rights, legal & safety",
+   "priority": "P0",
+   "need": "A trademark and likeness review for band and venue names and any logos before public promotion.",
+   "why": "The world uses real names (for example Phish and Moon Palace) as plain labels with disclaimers; promotion needs a proper review.",
+   "whyShort": "Real band and venue names need a proper review before promotion.",
+   "owner": "Daniel",
+   "status": "plain-text names and disclaimers only; no review"
+  },
+  {
+   "id": "N36",
+   "area": "Rights, legal & safety",
+   "priority": "P1",
+   "need": "A privacy policy and terms covering Show Buddies and Agent World: what is stored, for how long, and consent for telemetry.",
+   "why": "Required before collecting any usage data.",
+   "whyShort": "Privacy terms come before any telemetry.",
+   "owner": "Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N37",
+   "area": "Rights, legal & safety",
+   "priority": "P1",
+   "need": "Safety policies for meetups, including age requirements (the Rule Book already says first meetups happen in public, staffed places).",
+   "why": "Show Buddies introduces strangers.",
+   "whyShort": "Show Buddies introduces strangers, so safety rules matter.",
+   "owner": "Daniel",
+   "status": "rules only"
+  },
+  {
+   "id": "N38",
+   "area": "Operations & cost",
+   "priority": "P1",
+   "need": "A cost model with budget alerts for model tokens, hosting, CDN and realtime servers.",
+   "why": "Live agents and multiplayer cost money every hour.",
+   "whyShort": "Live agents cost money every hour; budgets need alerts.",
+   "owner": "Daniel · funded by Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N39",
+   "area": "Operations & cost",
+   "priority": "P2",
+   "need": "Monitoring and an incident runbook (uptime, error rates, one-click rollback).",
+   "why": "Fans notice outages on show night.",
+   "whyShort": "Fans notice outages on show night.",
+   "owner": "Daniel + Claude",
+   "status": "missing"
+  },
+  {
+   "id": "N40",
+   "area": "What Claude needs as the builder",
+   "priority": "P0",
+   "need": "Enough Claude usage for long build sessions, funded on the project’s account, so a build never stops at a personal plan’s limit.",
+   "why": "Large builds need long, uninterrupted sessions. This run started near a weekly limit and had to be paced around it.",
+   "whyShort": "Builds should run on the project’s budget, not stop at a personal limit.",
+   "owner": "Daniel (funding) · Smarth Vader (direction)",
+   "status": "proposed 2026-10-18 (see HANDOFF: Working together)"
+  },
+  {
+   "id": "N41",
+   "area": "What Claude needs as the builder",
+   "priority": "P1",
+   "need": "A shared GitHub repository with pull requests instead of ZIP handoffs, plus automated Claude runs on the project’s API key (for example a GitHub Actions workflow).",
+   "why": "Changes get reviewed, versioned and reverted cleanly.",
+   "whyShort": "Pull requests beat ZIP handoffs.",
+   "owner": "Daniel (repo, API key) + Smarth Vader (collaborator)",
+   "status": "proposed 2026-10-18"
+  },
+  {
+   "id": "N42",
+   "area": "What Claude needs as the builder",
+   "priority": "P1",
+   "need": "An art-direction brief from Daniel: look, mood, references and must-keep elements.",
+   "why": "State of the art is also taste; a brief avoids rebuilding the wrong thing.",
+   "whyShort": "An art brief keeps us building the right thing.",
+   "owner": "Daniel",
+   "status": "missing"
+  },
+  {
+   "id": "N43",
+   "area": "What Claude needs as the builder",
+   "priority": "P2",
+   "need": "Licensed asset libraries or generation tools (3D models, textures, sound effects) with clear licences.",
+   "why": "Procedural shapes only go so far.",
+   "whyShort": "Procedural shapes only go so far.",
+   "owner": "Daniel / Smarth Vader",
+   "status": "none"
+  },
+  {
+   "id": "N44",
+   "area": "What Claude needs as the builder",
+   "priority": "P1",
+   "need": "Human sign-off checkpoints for merges, publishing and posting, as used in this project.",
+   "why": "Keeps humans in charge of anything public or irreversible.",
+   "whyShort": "Humans stay in charge of anything public.",
+   "owner": "Smarth Vader + Daniel",
+   "status": "in use"
+  },
+  {
+   "id": "N45",
+   "area": "What Claude needs as the builder",
+   "priority": "P1",
+   "need": "Session continuity: a git commit and a stop-point note at the end of every build stage, so an interrupted session resumes cleanly in a fresh chat.",
+   "why": "Usage resets and long contexts interrupt work; work that is frozen on disk and committed cannot be lost or half-written.",
+   "whyShort": "Commit and note a stop point at every stage, so nothing is lost.",
+   "owner": "Claude + Smarth Vader",
+   "status": "memory stop points in use; git not yet"
+  }
+ ]
+}
